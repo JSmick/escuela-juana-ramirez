@@ -1,0 +1,9 @@
+__pycache__/
+**/__pycache__/
+*.pyc
+
+database/connection.py
+
+venv
+
+schema.sql
