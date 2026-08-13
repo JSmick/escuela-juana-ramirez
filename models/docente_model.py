@@ -4,8 +4,8 @@ from typing import Optional, TYPE_CHECKING, List
 from core.enums import EstadoLaboral
 
 if TYPE_CHECKING:
-    from models.seccion import Seccion
-    from models.horario import Horario
+    from models.seccion_model import Seccion
+    from models.horario_model import Horario
 
 class Docente(SQLModel, table=True):
     __tablename__ = "docentes"

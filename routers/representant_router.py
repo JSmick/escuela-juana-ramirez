@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 from models.models import  Representantes
-from schemas.representant_schema import  RepresentantesCreate, RepresentanteRead, RepresentanteUpdate, Representante, Estatus, RepresentantesRead
+from schemas.representante_schema import  RepresentantesCreate, RepresentanteRead, RepresentanteUpdate, Representante, Estatus, RepresentantesRead
 from database.connection import get_session
 from typing import Optional, List
 

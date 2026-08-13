@@ -1,29 +1,22 @@
-from pydantic import BaseModel, EmailStr , Field
-from datetime import date, time
-from sqlmodel import SQLModel
-from typing import Optional, List
-from enum import Enum
+from typing import Optional
+from pydantic import BaseModel, ConfigDict, Field
+from core.enums import NivelGrado
 
+class GradoBase(BaseModel):
+    descripcion: NivelGrado = Field(..., description="Grado académico (de 1er Grado a 6to Grado)")
 
-class grados(str, Enum):
-    primero = "Primero"
-    segundo = "Segundo"
-    tercero = "Tercero"
-    cuarto = "Cuarto"
-    quinto = "Quinto"
-    sexto = "Sexto"
+class GradoCreate(GradoBase):
+    pass
 
-class GradoRead(BaseModel):
-    id_grad: int
-    descripcion: str
-
-class GradoCreate(BaseModel):
-    descripcion: grados
-
-class GradosU(BaseModel):
-    descripcion: grados    
+class GradoPut(GradoBase):
+    is_active: bool = Field(default=True, description="Estado de activación del grado")
 
 class GradoUpdate(BaseModel):
-    descripcion: Optional[grados] = None
+    descripcion: Optional[NivelGrado] = None
+    is_active: Optional[bool] = None
 
- 
+class GradoRead(GradoBase):
+    id_grad: int
+    is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)

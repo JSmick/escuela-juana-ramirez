@@ -4,7 +4,7 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from models.estudiante_model import Estudiante
-    from models.seccion import Seccion
+    from models.seccion_model import Seccion
 
 class Inscripcion(SQLModel, table=True):
     __tablename__ = "inscripciones"

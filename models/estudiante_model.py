@@ -3,10 +3,10 @@ from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
-    from models.representante import Representante
-    from models.inscripcion import Inscripcion
-    from models.calificacion import Calificacion
-    from models.asistencia import Asistencia
+    from models.representante_model import Representante
+    from models.inscripcion_model import Inscripcion
+    from models.calificacion_model import Calificacion
+    from models.asistencia_model import Asistencia
 
 class Estudiante(SQLModel, table=True):
     __tablename__ = "estudiantes"

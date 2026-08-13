@@ -3,7 +3,7 @@ from datetime import date
 from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from models.seccion import Seccion
+    from models.seccion_model import Seccion
 
 class AnoEscolar(SQLModel, table=True):
     __tablename__ = "anos_escolares"

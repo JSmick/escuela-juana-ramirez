@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 from models.models import Estudiante
-from schemas.student_schema import EstudianteCreate, EstudianteUpdate, EstadoAcademico, EstudianteRead, Estudiantes
+from schemas.estudiante_schema import EstudianteCreate, EstudianteUpdate, EstadoAcademico, EstudianteRead, Estudiantes
 from database.connection import get_session
 from typing import Optional, List
 

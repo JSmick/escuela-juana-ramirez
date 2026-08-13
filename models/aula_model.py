@@ -2,7 +2,7 @@ from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from models.horario import Horario
+    from models.horario_model import Horario
 
 class Aula(SQLModel, table=True):
     __tablename__ = "aulas"

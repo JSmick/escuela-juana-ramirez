@@ -2,7 +2,7 @@ from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from models.seccion import Seccion
+    from models.seccion_model import Seccion
 
 class Turno(SQLModel, table=True):
     __tablename__ = "turnos"

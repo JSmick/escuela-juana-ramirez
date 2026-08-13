@@ -4,10 +4,10 @@ from datetime import time
 from core.enums import DiaSemana
 
 if TYPE_CHECKING:
-    from models.docente import Docente
-    from models.aula import Aula
-    from models.seccion import Seccion
-    from models.asignatura import Asignatura
+    from models.docente_model import Docente
+    from models.aula_model import Aula
+    from models.seccion_model import Seccion
+    from models.asignatura_model import Asignatura
 
 class Horario(SQLModel, table=True):
     __tablename__ = "horarios"

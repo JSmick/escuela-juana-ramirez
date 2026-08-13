@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 from models.models import  Grado, asignatura, Turno, Aulas, Seccion
-from schemas.asig_schema import  AsigCreate, AsigU, AsigUpdate, AsigRead
+from schemas.asignatura_schema import  AsigCreate, AsigU, AsigUpdate, AsigRead
 from schemas.grado_schema import GradoCreate, GradosU, GradoUpdate, GradoRead
 from schemas.turno_schema import TurnoCreate, TurnosU, TurnoUpdate, TurnoRead
 from schemas.aula_schema import AulasCreate, AulasU, AulasUpdate, AulasRead

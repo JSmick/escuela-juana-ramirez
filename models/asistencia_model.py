@@ -5,8 +5,8 @@ from core.enums import EstadoAsistencia
 
 if TYPE_CHECKING:
     from models.estudiante_model import Estudiante
-    from models.seccion import Seccion
-    from models.asignatura import Asignatura
+    from models.seccion_model import Seccion
+    from models.asignatura_model import Asignatura
 
 class Asistencia(SQLModel, table=True):
     __tablename__ = "asistencias"

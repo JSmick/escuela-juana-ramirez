@@ -1,25 +1,21 @@
-from pydantic import BaseModel, EmailStr , Field
-from datetime import date, time
-from sqlmodel import SQLModel
-from typing import Optional, List
-from enum import Enum
+from typing import Optional
+from pydantic import BaseModel, ConfigDict, Field
 
- 
-class turnos(str, Enum):
-    mañana = "Mañana"
-    tarde = "Tarde"
-    
+class TurnoBase(BaseModel):
+    descripcion: str = Field(..., max_length=50, description="Descripción del turno (Ej: 'Mañana', 'Tarde', 'Noche')")
 
-class TurnoRead(BaseModel):
-    id_turno: int
-    descripcion: str
+class TurnoCreate(TurnoBase):
+    pass
 
-class TurnoCreate(BaseModel):
-    descripcion: turnos
-    
-class TurnosU(BaseModel):
-    descripcion: turnos    
+class TurnoPut(TurnoBase):
+    is_active: bool = Field(default=True, description="Estado de activación en el sistema")
 
 class TurnoUpdate(BaseModel):
-    descripcion: Optional[turnos] = None
+    descripcion: Optional[str] = Field(default=None, max_length=50)
+    is_active: Optional[bool] = None
 
+class TurnoRead(TurnoBase):
+    id_turno: int
+    is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)

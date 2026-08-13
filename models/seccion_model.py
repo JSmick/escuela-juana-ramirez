@@ -3,12 +3,12 @@ from datetime import date
 from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from models.docente import Docente
-    from models.turno import Turno
-    from models.grado import Grado
-    from models.horario import Horario
-    from models.inscripcion import Inscripcion
-    from models.ano_escolar import AnoEscolar
+    from models.docente_model import Docente
+    from models.turno_model import Turno
+    from models.grado_model import Grado
+    from models.horario_model import Horario
+    from models.inscripcion_model import Inscripcion
+    from models.anoEscolar_model import AnoEscolar
 
 class Seccion(SQLModel, table=True):
     __tablename__ = "secciones"

@@ -26,3 +26,11 @@ class EstadoAsistencia(str, Enum):
     AUSENTE = "Ausente"
     JUSTIFICADO = "Justificado"
     RETRASO = "Retraso"
+
+class NivelGrado(str, Enum):
+    PRIMERO = "1er Grado"
+    SEGUNDO = "2do Grado"
+    TERCERO = "3er Grado"
+    CUARTO = "4to Grado"
+    QUINTO = "5to Grado"
+    SEXTO = "6to Grado"

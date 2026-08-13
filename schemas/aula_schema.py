@@ -1,26 +1,22 @@
-from pydantic import BaseModel, EmailStr , Field
-from datetime import date, time
-from sqlmodel import SQLModel
-from typing import Optional, List
-from enum import Enum
+from typing import Optional
+from pydantic import BaseModel, ConfigDict, Field
 
+class AulaBase(BaseModel):
+    descripcion: str = Field(..., max_length=50, description="Identificador o nombre del aula (Ej: Aula 101, Laboratorio de Computación)")
 
-class aulas(str, Enum):
-    aula1 = "Aula 1"
-    aula2 = "Aula 2"
-    aula3 = "Aula 3"
+class AulaCreate(AulaBase):
+    pass
 
+class AulaPut(AulaBase):
+    is_active: bool = Field(default=True, description="Estado de activación en el sistema")
 
-class AulasRead(BaseModel):
+class AulaUpdate(BaseModel):
+    descripcion: Optional[str] = Field(default=None, max_length=50)
+    is_active: Optional[bool] = None
+
+class AulaRead(AulaBase):
     id_aula: int
-    descripcion: str
+    is_active: bool
 
-class AulasCreate(BaseModel):
-    descripcion: aulas
-
-class AulasU(BaseModel):
-    descripcion: aulas
-
-class AulasUpdate(BaseModel):
-    descripcion: Optional[aulas] = None
+    model_config = ConfigDict(from_attributes=True)
 

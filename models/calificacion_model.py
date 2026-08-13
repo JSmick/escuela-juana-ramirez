@@ -5,7 +5,7 @@ from core.enums import CalificacionLetra
 
 if TYPE_CHECKING:
     from models.estudiante_model import Estudiante
-    from models.asignatura import Asignatura
+    from models.asignatura_model import Asignatura
 
 class Calificacion(SQLModel, table=True):
     __tablename__ = "calificaciones"
