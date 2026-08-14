@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class InscripcionBase(BaseModel):
     id_estudiante: int = Field(..., description="ID del estudiante a inscribir")
     id_seccion: int = Field(..., description="ID de la sección asignada")
-    ano_escolar: str = Field(..., max_length=10, description="Año escolar correspondiente (Ej: '2024-2025')")
+    id_ano_escolar: int = Field(..., description="ID del año escolar lectivo")
     fecha_inscripcion: date = Field(default_factory=date.today, description="Fecha de realización del trámite")
 
 class InscripcionCreate(InscripcionBase):
@@ -17,7 +17,7 @@ class InscripcionPut(InscripcionBase):
 class InscripcionUpdate(BaseModel):
     id_estudiante: Optional[int] = None
     id_seccion: Optional[int] = None
-    ano_escolar: Optional[str] = Field(default=None, max_length=10)
+    id_ano_escolar: Optional[int] = None
     fecha_inscripcion: Optional[date] = None
     is_active: Optional[bool] = None
 

@@ -3,6 +3,7 @@ from datetime import date
 from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from models.inscripcion_model import Inscripcion
     from models.seccion_model import Seccion
 
 class AnoEscolar(SQLModel, table=True):
@@ -16,3 +17,4 @@ class AnoEscolar(SQLModel, table=True):
     is_active: bool = Field(default=True, index=True)
 
     secciones: List["Seccion"] = Relationship(back_populates="ano_escolar")
+    inscripciones: List["Inscripcion"] = Relationship(back_populates="ano_escolar")

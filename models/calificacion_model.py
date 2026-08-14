@@ -21,5 +21,5 @@ class Calificacion(SQLModel, table=True):
     observacion: Optional[str] = Field(default=None, max_length=255)
     created_at: date = Field(default_factory=date.today)
 
-    estudiante: Optional["Estudiante"] = Relationship()
-    asignatura: Optional["Asignatura"] = Relationship()
+    estudiante: Optional["Estudiante"] = Relationship(back_populates="calificaciones")
+    asignatura: Optional["Asignatura"] = Relationship(back_populates="calificaciones")

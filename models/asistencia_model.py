@@ -22,6 +22,6 @@ class Asistencia(SQLModel, table=True):
 
     created_at: date = Field(default_factory=date.today)
 
-    estudiante: Optional["Estudiante"] = Relationship()
-    seccion: Optional["Seccion"] = Relationship()
-    asignatura: Optional["Asignatura"] = Relationship()
+    estudiante: Optional["Estudiante"] = Relationship(back_populates="asistencias")
+    seccion: Optional["Seccion"] = Relationship(back_populates="asistencias")
+    asignatura: Optional["Asignatura"] = Relationship(back_populates="asistencias")
