@@ -1,20 +1,37 @@
-from fastapi import FastAPI, HTTPException, Depends
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from sqlmodel import SQLModel
+
 from database.connection import engine
-from routers.docentes_router import router as docente_router
-from routers.representant_router import router as representante_router
-from routers.student_router import router as student_router
-from routers.a_s_g_t_as_router import router as a_s_g_t_as_router
 
-import models
+from models.anoEscolar_model import AnoEscolar
+from models.asignatura_model import Asignatura
+from models.asistencia_model import Asistencia
+from models.aula_model import Aula
+from models.calificacion_model import Calificacion
+from models.docente_model import Docente
+from models.estudiante_model import Estudiante
+from models.grado_model import Grado
+from models.horario_model import Horario
+from models.inscripcion_model import Inscripcion
+from models.representante_model import Representante
+from models.seccion_model import Seccion
+from models.turno_model import Turno
 
-app = FastAPI()
+from routers import turno_router
 
-app.include_router(docente_router, tags=["Docentes"], prefix="/Docentes")
-app.include_router(representante_router, tags=["Representantes"], prefix="/Representantes")
-app.include_router(student_router, tags=["Estudiantes"], prefix="/Estudiantes")
-app.include_router(a_s_g_t_as_router, tags=["Gestión de Clases"], prefix="/Gestión")
-
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     SQLModel.metadata.create_all(engine)
+    yield
+
+app = FastAPI(
+    title="Sistema de Gestión Escolar API",
+    lifespan=lifespan,
+)
+
+app.include_router(turno_router.router)
+
+@app.get("/")
+def read_root():
+    return {"message": "Bienvenido"}

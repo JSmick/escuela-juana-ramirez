@@ -5,7 +5,10 @@ from schemas.docente_schema import  DocenteCreate, EstadoLaboral, Docentes, Doce
 from database.connection import get_session
 from typing import Optional, List
 
-router = APIRouter() 
+router = APIRouter(
+    prefix="/docente",
+    tags=["Docente"]
+) 
 
 @router.post("", response_model=DocenteRead)
 def create_docente(docente_data: DocenteCreate, session: Session = Depends(get_session)):
