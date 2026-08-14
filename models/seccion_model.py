@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from models.horario_model import Horario
     from models.inscripcion_model import Inscripcion
     from models.anoEscolar_model import AnoEscolar
+    from models.asistencia_model import Asistencia
 
 class Seccion(SQLModel, table=True):
     __tablename__ = "secciones"
@@ -30,3 +31,4 @@ class Seccion(SQLModel, table=True):
     horarios: List["Horario"] = Relationship(back_populates="seccion")
     ano_escolar: Optional["AnoEscolar"] = Relationship(back_populates="secciones")
     inscripciones: List["Inscripcion"] = Relationship(back_populates="seccion")
+    asistencias: List["Asistencia"] = Relationship(back_populates="seccion")

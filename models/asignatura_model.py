@@ -4,6 +4,7 @@ from typing import Optional, List, TYPE_CHECKING
 if TYPE_CHECKING:
     from models.horario_model import Horario
     from models.calificacion_model import Calificacion
+    from models.asistencia_model import Asistencia
 
 class Asignatura(SQLModel, table=True):
     __tablename__ = "asignaturas"
@@ -14,3 +15,4 @@ class Asignatura(SQLModel, table=True):
 
     horarios: List["Horario"] = Relationship(back_populates="asignatura")
     calificaciones: List["Calificacion"] = Relationship(back_populates="asignatura")
+    asistencias: List["Asistencia"] = Relationship(back_populates="asignatura")
