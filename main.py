@@ -17,6 +17,7 @@ from models.inscripcion_model import Inscripcion
 from models.representante_model import Representante
 from models.seccion_model import Seccion
 from models.turno_model import Turno
+from models.asistenciaDocente_model import AsistenciaDocente
 
 from routers import turno_router
 

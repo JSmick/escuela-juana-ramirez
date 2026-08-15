@@ -24,11 +24,11 @@ def get_turno(id_turno: int, session: Session = Depends(get_session)):
     return turno_service.get_turno(id_turno, session)
 
 @router.put("/{id_turno}", response_model=TurnoRead)
-def update_turno_complete(id_turno: int, turno_data: TurnoPut, session: Session = Depends(get_session),):
+def update_turno_complete(id_turno: int, turno_data: TurnoPut, session: Session = Depends(get_session)):
     return turno_service.update_turno_complete(id_turno, turno_data, session)
 
 @router.patch("/{id_turno}", response_model=TurnoRead)
-def update_turno_partial(id_turno: int, turno_data: TurnoUpdate, session: Session = Depends(get_session),):
+def update_turno_partial(id_turno: int, turno_data: TurnoUpdate, session: Session = Depends(get_session)):
     return turno_service.update_turno_partial(id_turno, turno_data, session)
 
 @router.delete("/{id_turno}")

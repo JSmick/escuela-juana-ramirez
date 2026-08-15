@@ -6,6 +6,7 @@ from core.enums import EstadoLaboral
 if TYPE_CHECKING:
     from models.seccion_model import Seccion
     from models.horario_model import Horario
+    from models.asistenciaDocente_model import AsistenciaDocente
 
 class Docente(SQLModel, table=True):
     __tablename__ = "docentes"
@@ -22,6 +23,7 @@ class Docente(SQLModel, table=True):
 
     secciones: List["Seccion"] = Relationship(back_populates="docente")
     horarios: List["Horario"] = Relationship(back_populates="docente")
+    asistencias_docente: List["AsistenciaDocente"] = Relationship(back_populates="docente")
 
     created_at: date = Field(default_factory=date.today)
     updated_at: Optional[date] = Field(default=None)
