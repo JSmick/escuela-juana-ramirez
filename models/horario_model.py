@@ -28,4 +28,4 @@ class Horario(SQLModel, table=True):
     aula: Optional["Aula"] = Relationship(back_populates="horarios")
     seccion: Optional["Seccion"] = Relationship(back_populates="horarios")
     asignatura: Optional["Asignatura"] = Relationship(back_populates="horarios")
-    asistencias_docente: List["AsistenciaDocente"] = Relationship(back_populates="docente")
+    asistencias_docente: List["AsistenciaDocente"] = Relationship(back_populates="horario")
