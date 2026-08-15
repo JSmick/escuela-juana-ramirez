@@ -7,7 +7,14 @@ from schemas.turno_schema import (TurnoCreate, TurnoPut, TurnoUpdate)
 def create_turno(turno_data: TurnoCreate, session: Session):
     existing_turno = session.exec(select(Turno).where(Turno.descripcion == turno_data.descripcion)).first()
     if existing_turno:
-        raise HTTPException(status_code=400, detail="El turno ya se encuentra registrado")
+        if existing_turno.is_active:
+            raise HTTPException(status_code=400, detail="El turno ya se encuentra registrado")
+
+        existing_turno.is_active = True
+        session.add(existing_turno)
+        session.commit()
+        session.refresh(existing_turno)
+        return existing_turno
 
     new_turno = Turno.model_validate(turno_data)
     session.add(new_turno)
