@@ -3,12 +3,7 @@ from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
 
 from database.connection import get_session
-from schemas.grado_schema import (
-    GradoCreate,
-    GradoPut,
-    GradoRead,
-    GradoUpdate,
-)
+from schemas.grado_schema import (GradoCreate, GradoPut, GradoRead, GradoUpdate)
 from services import grado_service
 
 router = APIRouter(
