@@ -37,6 +37,10 @@ def update_turno_complete(id_turno: int, turno_data: TurnoPut,session: Session):
     if not turno:
         raise HTTPException(status_code=404, detail="Turno no encontrado")
 
+    existing = session.exec(select(Turno).where(Turno.descripcion == turno_data.descripcion, Turno.id_turno != id_turno)).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Ya existe un turno con esa descripción")
+
     update_dict = turno_data.model_dump()
     for key, value in update_dict.items():
         setattr(turno, key, value)
@@ -52,6 +56,11 @@ def update_turno_partial(id_turno: int, turno_data: TurnoUpdate, session: Sessio
         raise HTTPException(status_code=404, detail="Turno no encontrado")
 
     update_dict = turno_data.model_dump(exclude_unset=True)
+    if "descripcion" in update_dict:
+        existing = session.exec(select(Turno).where(Turno.descripcion == update_dict["descripcion"], Turno.id_turno != id_turno)).first()
+        if existing:
+            raise HTTPException(status_code=400, detail="Ya existe un turno con esa descripción")
+
     for key, value in update_dict.items():
         setattr(turno, key, value)
 

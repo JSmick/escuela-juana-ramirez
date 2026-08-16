@@ -23,6 +23,7 @@ from routers import turno_router
 from routers import grado_router
 from routers import aula_router
 from routers import asignatura_router
+from routers import representante_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +36,7 @@ app.include_router(turno_router.router)
 app.include_router(grado_router.router)
 app.include_router(aula_router.router)
 app.include_router(asignatura_router.router)
+app.include_router(representante_router.router)
 
 @app.get("/")
 def read_root():
