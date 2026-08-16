@@ -6,4 +6,4 @@ database/connection.py
 
 venv
 
-schema.sql
+escuelaa.sql
