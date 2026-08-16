@@ -6,26 +6,32 @@ from models.representante_model import Representante
 from schemas.representante_schema import (RepresentanteCreate, RepresentantePut, RepresentanteUpdate)
 
 def create_representante(representante_data: RepresentanteCreate, session: Session):
-    conditions = [Representante.cedula == representante_data.cedula]
-    if representante_data.email:
-        conditions.append(Representante.email == representante_data.email)
+    existing_cedula = session.exec(select(Representante).where(Representante.cedula == representante_data.cedula)).first()
+    if existing_cedula:
+        if existing_cedula.is_active:
+            raise HTTPException(status_code=400, detail="La cédula ya se encuentra registrada en el sistema",)
 
-    existing = session.exec(select(Representante).where(or_(*conditions))).first()
-
-    if existing:
-        if existing.is_active:
-            raise HTTPException(status_code=400, detail="Ya existe un representante registrado con esa cédula o correo electrónico",)
+        if representante_data.email:
+            existing_email = session.exec(select(Representante).where(Representante.email == representante_data.email, Representante.id_represen != existing_cedula.id_represen)).first()
+            if existing_email:
+                raise HTTPException(status_code=400, detail="El correo electrónico ya está en uso por otro representante",)
 
         update_dict = representante_data.model_dump()
         for key, value in update_dict.items():
-            setattr(existing, key, value)
-        existing.is_active = True
-        existing.updated_at = date.today()
+            setattr(existing_cedula, key, value)
 
-        session.add(existing)
+        existing_cedula.is_active = True
+        existing_cedula.updated_at = date.today()
+
+        session.add(existing_cedula)
         session.commit()
-        session.refresh(existing)
-        return existing
+        session.refresh(existing_cedula)
+        return existing_cedula
+
+    if representante_data.email:
+        existing_email = session.exec(select(Representante).where(Representante.email == representante_data.email)).first()
+        if existing_email:
+            raise HTTPException(status_code=400,detail="El correo electrónico ya está en uso por otro representante")
 
     new_representante = Representante.model_validate(representante_data)
     session.add(new_representante)
