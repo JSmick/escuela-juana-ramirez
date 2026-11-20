@@ -43,115 +43,80 @@ export default function Horarios() {
   const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
   useEffect(() => {
-    cargarDatosIniciales();
+    cargarTodo();
   }, []);
 
-  const cargarDatosIniciales = async () => {
+  const cargarTodo = async () => {
     setCargando(true);
-
-    let docData = [];
-
-    // Docentes
     try {
-      docData = await getDocentes();
-      setDocentes(Array.isArray(docData) ? docData : []);
-    } catch (e) {
-      console.error('Error docentes:', e.response?.status, e.response?.data);
-      setDocentes([]);
-    }
+      const [docData, aulData, secData, asigData, gradData] = await Promise.all([
+        getDocentes(),
+        getAulas(),
+        getSecciones(),
+        getAsignaturas(),
+        getGrados()
+      ]);
 
-    // Aulas
-    try {
-      const data = await getAulas();
-      setAulas(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error('Error aulas:', e.response?.status, e.response?.data);
-      setAulas([]);
-    }
+      setDocentes(docData);
+      setAulas(aulData);
+      setSecciones(secData);
+      setAsignaturas(asigData);
+      setGrados(gradData);
 
-    // Secciones
-    try {
-      const data = await getSecciones();
-      setSecciones(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error('Error secciones:', e.response?.status, e.response?.data);
-      setSecciones([]);
-    }
-
-    // Asignaturas
-    try {
-      const data = await getAsignaturas();
-      setAsignaturas(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error('Error asignaturas:', e.response?.status, e.response?.data);
-      setAsignaturas([]);
-    }
-
-    // Grados
-    try {
-      const data = await getGrados();
-      setGrados(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error('Error grados:', e.response?.status, e.response?.data);
-      setGrados([]);
-    }
-
-    // HORARIOS (lo más importante)
-    try {
-      let horData = [];
-
+      // Cargar horarios según el rol / filtro
       if (rolActual === 'docente') {
-        const idUsuario = localStorage.getItem('id_docente'); // es el id_user del token
-        console.log('id_user logueado:', idUsuario);
-        console.log('docentes recibidos:', docData);
-
+        const idUserLogueado = localStorage.getItem('id_docente');
         const docenteEncontrado = docData.find(
-          (d) => String(d.id_user) === String(idUsuario)
+          (d) => String(d.id_user) === String(idUserLogueado)
         );
 
-        console.log('docente encontrado:', docenteEncontrado);
-
         if (!docenteEncontrado) {
-          alert('No se encontró tu perfil de docente (revisa id_user en /docente).');
+          alert('No se encontró tu perfil de docente. Contacta al administrador.');
           setHorarios([]);
-        } else {
-          horData = await getHorariosPorDocente(docenteEncontrado.id_docen);
-          console.log('horarios del docente:', horData);
+          return;
         }
-      } else {
-        // ADMIN
-        horData = await getHorarios();
-        console.log('todos los horarios (admin):', horData);
-      }
 
-      setHorarios(Array.isArray(horData) ? horData : []);
-    } catch (e) {
-      console.error('Error horarios:', e.response?.status, e.response?.data || e);
+        const horData = await getHorariosPorDocente(docenteEncontrado.id_docen);
+        setHorarios(Array.isArray(horData) ? horData : []);
+      } else {
+        // Admin
+        if (filtroDocente) {
+          const horData = await getHorariosPorDocente(filtroDocente);
+          setHorarios(Array.isArray(horData) ? horData : []);
+        } else {
+          const horData = await getHorarios();
+          setHorarios(Array.isArray(horData) ? horData : []);
+        }
+      }
+    } catch (error) {
+      console.error('Error al cargar datos de horarios:', error);
+      alert('No se pudieron cargar los datos necesarios para el horario.');
       setHorarios([]);
     } finally {
       setCargando(false);
     }
   };
 
-const manejarFiltroAdmin = async (e) => {
-  const idSeleccionado = e.target.value;
-  setFiltroDocente(idSeleccionado);
-  setCargando(true);
-  try {
-    const data =
-      idSeleccionado === ''
-        ? await getHorarios()
-        : await getHorariosPorDocente(idSeleccionado);
-
-    console.log('filtro admin →', data);
-    setHorarios(Array.isArray(data) ? data : []);
-  } catch (e) {
-    console.error('Error filtro:', e.response?.status, e.response?.data || e);
-    setHorarios([]);
-  } finally {
-    setCargando(false);
-  }
-};
+  const manejarFiltroAdmin = async (e) => {
+    const idSeleccionado = e.target.value;
+    setFiltroDocente(idSeleccionado);
+    setCargando(true);
+    try {
+      if (!idSeleccionado) {
+        const todos = await getHorarios();
+        setHorarios(Array.isArray(todos) ? todos : []);
+      } else {
+        const filtrados = await getHorariosPorDocente(idSeleccionado);
+        setHorarios(Array.isArray(filtrados) ? filtrados : []);
+      }
+    } catch (error) {
+      console.error('Error al filtrar horarios:', error);
+      alert('No se pudieron cargar los horarios del docente.');
+      setHorarios([]);
+    } finally {
+      setCargando(false);
+    }
+  };
 
   // Helpers de nombres
   const obtenerNombreGrado = (idGrado) => {
@@ -269,42 +234,44 @@ const manejarFiltroAdmin = async (e) => {
   const guardarHorario = async (e) => {
     e.preventDefault();
     try {
-      const datos = {
+      const datosAEnviar = {
         ...formulario,
         id_aula: Number(formulario.id_aula),
         id_seccion: Number(formulario.id_seccion),
         id_asig: Number(formulario.id_asig),
-        id_docent: Number(formulario.id_docent),
+        id_docent: Number(formulario.id_docent)
       };
 
-      if (modoEdicion && idEditando) {
-        await updateHorario(idEditando, { ...datos, is_active: true });
-        alert('¡Horario actualizado con éxito!');
-      } else {
-        await createHorario(datos);
-        alert('¡Bloque de horario asignado con éxito!');
-      }
-
+      await createHorario(datosAEnviar);
+      alert('¡Bloque de horario asignado con éxito!');
+      
+      setFormulario({
+        dia: 'Lunes',
+        hora_inicio: '08:00:00',
+        hora_fin: '09:35:00',
+        id_aula: '',
+        id_seccion: '',
+        id_asig: '',
+        id_docent: ''
+      });
       setMostrarFormulario(false);
-      limpiarFormulario();
-      cargarDatosIniciales();
+
+      await recargarHorarios();
     } catch (error) {
-      console.error(error.response?.data);
-      alert(
-        'Error al guardar el horario: ' +
-          JSON.stringify(error.response?.data?.detail || error.message)
-      );
+      console.error("DETALLE DEL ERROR DE FASTAPI:", error.response?.data);
+      alert('Error al guardar el horario: ' + JSON.stringify(error.response?.data?.detail || error.message));
     }
   };
 
   const eliminarHorarioId = async (id) => {
-    if (!window.confirm('¿Está seguro de eliminar este bloque de horario?')) return;
-    try {
-      await deleteHorario(id);
-      cargarDatosIniciales();
-    } catch (error) {
-      console.error(error);
-      alert('No se pudo eliminar el horario.');
+    if (window.confirm('¿Está seguro de eliminar este bloque de horario?')) {
+      try {
+        await deleteHorario(id);
+        await recargarHorarios(); // ✅ igual que al guardar
+      } catch (error) {
+        console.error(error);
+        alert('No se pudo eliminar el horario.');
+      }
     }
   };
 
