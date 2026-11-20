@@ -126,15 +126,20 @@ export default function Aulas() {
 
             {editandoId && (
               <div className="campo-formulario" style={{ marginTop: '10px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <input
-                    type="checkbox"
-                    name="is_active"
-                    checked={formulario.is_active}
-                    onChange={manejarCambio}
-                  />
-                  Aula activa
-                </label>
+                <label>Estado</label>
+                <select
+                  name="is_active"
+                  value={formulario.is_active ? 'true' : 'false'}
+                  onChange={(e) =>
+                    setFormulario({
+                      ...formulario,
+                      is_active: e.target.value === 'true'
+                    })
+                  }
+                >
+                  <option value="true">Activa</option>
+                  <option value="false">Inactiva</option>
+                </select>
               </div>
             )}
 

@@ -6,8 +6,12 @@ export const getGrados = async () => {
 };
 
 export const createGrado = async (gradoData) => {
-  // Coincide con GradoCreate: { descripcion }[cite: 11]
   const response = await axiosClient.post('/grados', gradoData);
+  return response.data;
+};
+
+export const updateGrado = async (id, gradoData) => {
+  const response = await axiosClient.put(`/grados/${id}`, gradoData);
   return response.data;
 };
 

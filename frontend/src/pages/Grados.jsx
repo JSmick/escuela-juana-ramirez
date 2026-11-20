@@ -1,13 +1,31 @@
 import { useState, useEffect } from 'react';
-import { getGrados, createGrado, deleteGrado } from '../services/gradoService';
+import { getGrados, createGrado, updateGrado, deleteGrado } from '../services/gradoService';
+
+const OPCIONES_GRADO = [
+  'Inicial A',
+  'Inicial B',
+  '1er Grado',
+  '2do Grado',
+  '3er Grado',
+  '4to Grado',
+  '5to Grado',
+  '6to Grado'
+];
 
 export default function Grados() {
   const [grados, setGrados] = useState([]);
   const [mostrarForm, setMostrarForm] = useState(false);
-  const [descripcion, setDescripcion] = useState('1er Grado');
   const [cargando, setCargando] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
 
-  useEffect(() => { cargarGrados(); }, []);
+  const [formulario, setFormulario] = useState({
+    descripcion: '1er Grado',
+    is_active: true
+  });
+
+  useEffect(() => {
+    cargarGrados();
+  }, []);
 
   const cargarGrados = async () => {
     try {
@@ -17,19 +35,53 @@ export default function Grados() {
     } catch (error) {
       console.error(error);
       alert('Error al cargar grados.');
-    } finally { setCargando(false); }
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const abrirFormularioNuevo = () => {
+    setEditandoId(null);
+    setFormulario({ descripcion: '1er Grado', is_active: true });
+    setMostrarForm(true);
+  };
+
+  const abrirFormularioEditar = (grado) => {
+    setEditandoId(grado.id_grad);
+    setFormulario({
+      descripcion: grado.descripcion,
+      is_active: grado.is_active
+    });
+    setMostrarForm(true);
+  };
+
+  const cancelarFormulario = () => {
+    setMostrarForm(false);
+    setEditandoId(null);
+    setFormulario({ descripcion: '1er Grado', is_active: true });
   };
 
   const guardarGrado = async (e) => {
     e.preventDefault();
     try {
-      await createGrado({ descripcion });
-      alert('¡Grado registrado con éxito!');
-      setMostrarForm(false);
+      if (editandoId) {
+        await updateGrado(editandoId, {
+          descripcion: formulario.descripcion,
+          is_active: formulario.is_active
+        });
+        alert('¡Grado actualizado con éxito!');
+      } else {
+        await createGrado({ descripcion: formulario.descripcion });
+        alert('¡Grado registrado con éxito!');
+      }
+      cancelarFormulario();
       cargarGrados();
     } catch (error) {
       console.error(error);
-      alert('Error al guardar el grado.');
+      alert(
+        'Error al guardar el grado: ' +
+          JSON.stringify(error.response?.data?.detail || error.message)
+      );
     }
   };
 
@@ -38,7 +90,10 @@ export default function Grados() {
       try {
         await deleteGrado(id);
         cargarGrados();
-      } catch (error) { console.error(error); alert('No se pudo eliminar.'); }
+      } catch (error) {
+        console.error(error);
+        alert('No se pudo eliminar.');
+      }
     }
   };
 
@@ -46,36 +101,64 @@ export default function Grados() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
         <h1>Gestión de Grados Académicos</h1>
-        <button className="boton-primario" onClick={() => setMostrarForm(!mostrarForm)}>
+        <button
+          className="boton-primario"
+          onClick={() => (mostrarForm ? cancelarFormulario() : abrirFormularioNuevo())}
+        >
           {mostrarForm ? 'Cancelar' : '+ Nuevo Grado'}
         </button>
       </div>
 
       {mostrarForm && (
         <div className="tarjeta" style={{ marginBottom: '20px' }}>
-          <h3>Registrar Grado</h3>
+          <h3>{editandoId ? 'Editar Grado' : 'Registrar Grado'}</h3>
           <form onSubmit={guardarGrado}>
             <div className="campo-formulario">
               <label>Nivel de Grado</label>
-              <select value={descripcion} onChange={(e) => setDescripcion(e.target.value)}>
-                <option value="Inicial A">Inicial A</option>
-                <option value="Inicial B">Inicial B</option>
-                <option value="1er Grado">1er Grado</option>
-                <option value="2do Grado">2do Grado</option>
-                <option value="3er Grado">3er Grado</option>
-                <option value="4to Grado">4to Grado</option>
-                <option value="5to Grado">5to Grado</option>
-                <option value="6to Grado">6to Grado</option>
+              <select
+                value={formulario.descripcion}
+                onChange={(e) =>
+                  setFormulario({ ...formulario, descripcion: e.target.value })
+                }
+              >
+                {OPCIONES_GRADO.map((op) => (
+                  <option key={op} value={op}>
+                    {op}
+                  </option>
+                ))}
               </select>
             </div>
-            <button type="submit" className="boton-primario" style={{ marginTop: '10px' }}>Guardar</button>
+
+            {editandoId && (
+              <div className="campo-formulario" style={{ marginTop: '10px' }}>
+                <label>Estado</label>
+                <select
+                  value={formulario.is_active ? 'true' : 'false'}
+                  onChange={(e) =>
+                    setFormulario({
+                      ...formulario,
+                      is_active: e.target.value === 'true'
+                    })
+                  }
+                >
+                  <option value="true">Activo</option>
+                  <option value="false">Inactivo</option>
+                </select>
+              </div>
+            )}
+
+            <button type="submit" className="boton-primario" style={{ marginTop: '10px' }}>
+              {editandoId ? 'Actualizar Grado' : 'Guardar'}
+            </button>
           </form>
         </div>
       )}
 
       <div className="tarjeta">
         <h3>Grados Registrados ({grados.length})</h3>
-        {cargando ? <p>Cargando...</p> : (
+        {cargando ? (
+          <p>Cargando...</p>
+        ) : (
           <table className="tabla">
             <thead>
               <tr>
@@ -86,13 +169,40 @@ export default function Grados() {
               </tr>
             </thead>
             <tbody>
-              {grados.map(g => (
+              {grados.map((g) => (
                 <tr key={g.id_grad}>
                   <td>{g.id_grad}</td>
-                  <td><strong>{g.descripcion}</strong></td>
+                  <td>
+                    <strong>{g.descripcion}</strong>
+                  </td>
                   <td>{g.is_active ? 'Activo' : 'Inactivo'}</td>
-                  <td className="acciones-tabla">
-                    <button onClick={() => eliminarGradoId(g.id_grad)} style={{ background: '#e53e3e', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Eliminar</button>
+                  <td className="acciones-tabla" style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => abrirFormularioEditar(g)}
+                      style={{
+                        background: '#3182ce',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => eliminarGradoId(g.id_grad)}
+                      style={{
+                        background: '#e53e3e',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Eliminar
+                    </button>
                   </td>
                 </tr>
               ))}
