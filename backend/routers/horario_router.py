@@ -34,9 +34,9 @@ def get_horarios(
 
 @router.get("/docente/{id_docent}", response_model=List[HorarioRead])
 def get_horarios_por_docente(
-    id_docent: int,
+    id_docent: int, 
     session: Session = Depends(get_session),
-    current_user: dict = Depends(require_roles(1, 2, 3))
+    current_user: dict = Depends(require_roles(1, 2, 3)) 
 ):
     return horario_service.get_horarios_por_docente_service(session, id_docent)
 
@@ -47,14 +47,6 @@ def get_horario(
     current_user: dict = Depends(require_roles(1, 2, 3))
 ):
     return horario_service.get_horario_by_id_service(session, id_horario)
-
-@router.get("/docente/{id_docent}", response_model=List[HorarioRead])
-def get_horarios_por_docente(
-    id_docent: int,
-    session: Session = Depends(get_session),
-    current_user: dict = Depends(require_roles(1, 2, 3)) 
-):
-    return horario_service.get_horarios_por_docente_service(session, id_docent)
 
 @router.put("/{id_horario}", response_model=HorarioRead)
 def update_horario_complete(

@@ -40,6 +40,8 @@ export default function Horarios() {
     id_docent: '',
   });
 
+  const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
   useEffect(() => {
     cargarDatosIniciales();
   }, []);
