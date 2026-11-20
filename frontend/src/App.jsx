@@ -67,7 +67,6 @@ function App() {
     window.history.replaceState(null, '', '/'); 
   };
 
-  // 1. SI NO HA INICIADO SESIÓN
   if (!logueado) {
     if (enBienvenida) {
       return <Bienvenida irAlLogin={() => setEnBienvenida(false)} />;
@@ -75,10 +74,6 @@ function App() {
     return <Login alIniciarSesion={iniciarSesion} volverAtras={() => setEnBienvenida(true)} />;
   }
 
-  // 2. SI EL USUARIO ES REPRESENTANTE (No ve el menú lateral, solo el formulario)
-  
-
-  // 3. LÓGICA DE VISTAS PARA ADMIN Y DOCENTE
   const renderizarVista = () => {
 
     if (rol === 'representante') {

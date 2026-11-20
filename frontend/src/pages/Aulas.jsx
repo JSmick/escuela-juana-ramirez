@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { getAulas, createAula, deleteAula } from '../services/aulaService';
+import { getAulas, createAula, updateAula, deleteAula } from '../services/aulaService';
 
 export default function Aulas() {
   const [aulas, setAulas] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [cargando, setCargando] = useState(false);
+  const [editandoId, setEditandoId] = useState(null); // null = crear, número = editar
 
   const [formulario, setFormulario] = useState({
-    descripcion: ''
+    descripcion: '',
+    is_active: true
   });
 
   useEffect(() => {
@@ -20,26 +22,66 @@ export default function Aulas() {
       const data = await getAulas();
       setAulas(data);
     } catch (error) {
-      console.error("Error al cargar aulas:", error);
-      alert("No se pudieron cargar las aulas del servidor.");
+      console.error('Error al cargar aulas:', error);
+      alert('No se pudieron cargar las aulas del servidor.');
     } finally {
       setCargando(false);
     }
   };
 
-  const manejarCambio = (e) => setFormulario({ ...formulario, [e.target.name]: e.target.value });
+  const manejarCambio = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormulario({
+      ...formulario,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+
+  const abrirFormularioNuevo = () => {
+    setEditandoId(null);
+    setFormulario({ descripcion: '', is_active: true });
+    setMostrarFormulario(true);
+  };
+
+  const abrirFormularioEditar = (aula) => {
+    setEditandoId(aula.id_aula);
+    setFormulario({
+      descripcion: aula.descripcion,
+      is_active: aula.is_active
+    });
+    setMostrarFormulario(true);
+  };
+
+  const cancelarFormulario = () => {
+    setMostrarFormulario(false);
+    setEditandoId(null);
+    setFormulario({ descripcion: '', is_active: true });
+  };
 
   const guardarAula = async (e) => {
     e.preventDefault();
     try {
-      await createAula(formulario);
-      alert('¡Aula registrada con éxito!');
-      setFormulario({ descripcion: '' });
-      setMostrarFormulario(false);
+      if (editandoId) {
+        // Actualizar (PUT espera descripcion + is_active)
+        await updateAula(editandoId, {
+          descripcion: formulario.descripcion,
+          is_active: formulario.is_active
+        });
+        alert('¡Aula actualizada con éxito!');
+      } else {
+        // Crear (solo necesita descripcion)
+        await createAula({ descripcion: formulario.descripcion });
+        alert('¡Aula registrada con éxito!');
+      }
+
+      cancelarFormulario();
       cargarAulasDesdeAPI();
     } catch (error) {
       console.error(error);
-      alert('Error al guardar el aula. Verifica los datos.');
+      alert(
+        'Error al guardar el aula: ' +
+          JSON.stringify(error.response?.data?.detail || error.message)
+      );
     }
   };
 
@@ -59,27 +101,45 @@ export default function Aulas() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
         <h1>Gestión de Aulas</h1>
-        <button className="boton-primario" onClick={() => setMostrarFormulario(!mostrarFormulario)}>
+        <button
+          className="boton-primario"
+          onClick={() => (mostrarFormulario ? cancelarFormulario() : abrirFormularioNuevo())}
+        >
           {mostrarFormulario ? 'Cancelar' : '+ Nueva Aula'}
         </button>
       </div>
 
       {mostrarFormulario && (
         <div className="tarjeta" style={{ marginBottom: '20px' }}>
-          <h3>Registrar Nueva Aula</h3>
+          <h3>{editandoId ? 'Editar Aula' : 'Registrar Nueva Aula'}</h3>
           <form onSubmit={guardarAula}>
             <div className="campo-formulario">
               <label>Nombre / Descripción del Aula (Ej: Aula 1, Salón B)</label>
-              <input 
-                name="descripcion" 
-                value={formulario.descripcion} 
-                onChange={manejarCambio} 
-                maxLength={50} 
-                required 
+              <input
+                name="descripcion"
+                value={formulario.descripcion}
+                onChange={manejarCambio}
+                maxLength={50}
+                required
               />
             </div>
+
+            {editandoId && (
+              <div className="campo-formulario" style={{ marginTop: '10px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <input
+                    type="checkbox"
+                    name="is_active"
+                    checked={formulario.is_active}
+                    onChange={manejarCambio}
+                  />
+                  Aula activa
+                </label>
+              </div>
+            )}
+
             <button type="submit" className="boton-primario" style={{ marginTop: '15px' }}>
-              Guardar Aula
+              {editandoId ? 'Actualizar Aula' : 'Guardar Aula'}
             </button>
           </form>
         </div>
@@ -87,7 +147,9 @@ export default function Aulas() {
 
       <div className="tarjeta">
         <h3>Aulas Registradas ({aulas.length})</h3>
-        {cargando ? <p>Cargando datos...</p> : (
+        {cargando ? (
+          <p>Cargando datos...</p>
+        ) : (
           <table className="tabla">
             <thead>
               <tr>
@@ -98,13 +160,38 @@ export default function Aulas() {
               </tr>
             </thead>
             <tbody>
-              {aulas.map(aula => (
+              {aulas.map((aula) => (
                 <tr key={aula.id_aula}>
                   <td>{aula.id_aula}</td>
-                  <td><strong>{aula.descripcion}</strong></td>
+                  <td>
+                    <strong>{aula.descripcion}</strong>
+                  </td>
                   <td>{aula.is_active ? 'Activa' : 'Inactiva'}</td>
-                  <td className="acciones-tabla">
-                    <button onClick={() => eliminarAulaId(aula.id_aula)} style={{ background: '#e53e3e', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>
+                  <td className="acciones-tabla" style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => abrirFormularioEditar(aula)}
+                      style={{
+                        background: '#3182ce',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => eliminarAulaId(aula.id_aula)}
+                      style={{
+                        background: '#e53e3e',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
                       Eliminar
                     </button>
                   </td>
