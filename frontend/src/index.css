@@ -1,0 +1,267 @@
+/* src/index.css */
+:root {
+  --color-primario: #1e3a5f;
+  --color-secundario: #2c5282;
+  --color-fondo: #f7fafc;
+  --color-borde: #e2e8f0;
+  --color-texto: #2d3748;
+  --sidebar-ancho: 260px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.contenido-principal {
+  flex: 1;
+  margin-left: var(--sidebar-ancho);
+  padding: 24px;
+}
+
+.tarjeta {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th, .tabla td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tabla th {
+  background-color: var(--color-primario);
+  color: white;
+  font-weight: 600;
+}
+
+.campo-formulario {
+  margin-bottom: 16px;
+}
+
+.campo-formulario label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.campo-formulario input,
+.campo-formulario select,
+.campo-formulario textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.boton-primario {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.boton-primario:hover {
+  background-color: var(--color-secundario);
+}
+/* Estilos para cuando se imprima la página */
+@media print {
+  .sidebar, .boton-primario, .acciones-tabla, button {
+    display: none !important; /* Oculta menús y botones al imprimir */
+  }
+  .contenido-principal {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+  body {
+    background-color: white !important;
+  }
+  .tarjeta {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .tabla th {
+    background-color: #eee !important;
+    color: black !important;
+    border-bottom: 2px solid black;
+  }
+}
+
+
+/* Estilos para la Pantalla de Bienvenida */
+.bienvenida-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 1s ease-in-out;
+  position: relative;
+}
+
+/* Capa oscura para que el texto blanco se lea bien sobre las fotos */
+.bienvenida-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(30, 58, 95, 0.7); /* Azul oscuro semitransparente */
+  z-index: 1;
+}
+
+.bienvenida-contenido {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 20px;
+  max-width: 800px;
+}
+
+.bienvenida-contenido h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.bienvenida-contenido p {
+  font-size: 20px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+/* Indicadores (puntitos) */
+.carrusel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dot.activo {
+  background: white;
+  transform: scale(1.2);
+}
+
+
+/* Estilos exclusivos para la Constancia */
+.constancia-hoja {
+  background: white;
+  width: 800px;
+  min-height: 1000px;
+  margin: 0 auto;
+  padding: 50px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  font-family: 'Times New Roman', Times, serif;
+  color: #333;
+  position: relative;
+}
+
+.constancia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  text-align: center;
+  padding-bottom: 15px;
+  margin-bottom: 40px;
+}
+
+.constancia-titulo {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+}
+
+.constancia-texto {
+  font-size: 17px;
+  line-height: 2.5;
+  text-align: justify;
+}
+
+.constancia-texto span {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.constancia-firmas {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+
+/* Reglas al imprimir */
+@media print {
+  body * {
+    visibility: hidden; /* Oculta todo */
+  }
+  .constancia-hoja, .constancia-hoja * {
+    visibility: visible; /* Muestra solo la constancia */
+  }
+  .constancia-hoja {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: none;
+    padding: 20px;
+    width: 100%;
+  }
+}
+
+/*
+@media print {
+   Oculta el menú lateral, los botones y los cuadros de edición al imprimir o guardar como PDF 
+  .no-imprimir, nav, aside, button {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+  }
+
+  .constancia-hoja {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}*/

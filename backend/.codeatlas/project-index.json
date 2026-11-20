@@ -1,0 +1,3297 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-25T17:05:49.411Z",
+  "rootPath": "c:\\Users\\USUARIO\\Desktop\\escuela-juana-ramirez-main",
+  "summary": {
+    "totalFiles": 81,
+    "totalEdges": 228,
+    "totalLines": 3770,
+    "languages": [
+      "py"
+    ],
+    "flowStages": {
+      "start": 1,
+      "main": 22,
+      "core": 39,
+      "helpers": 19
+    }
+  },
+  "files": [
+    {
+      "path": "core/enums.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 41,
+      "size": 863,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 27
+      },
+      "crossStageLinks": 7,
+      "impactScore": 27,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 43,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: EstadoLaboral, DiaSemana, CalificacionLetra",
+      "functions": [],
+      "classes": [
+        "EstadoLaboral",
+        "DiaSemana",
+        "CalificacionLetra",
+        "EstadoAsistencia",
+        "NivelGrado",
+        "RolEnum"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "models/asistenciaDocente_model.py",
+        "models/asistencia_model.py",
+        "models/calificacion_model.py",
+        "models/docente_model.py",
+        "models/grado_model.py",
+        "models/horario_model.py",
+        "schemas/asistenciaDocente_schema.py",
+        "schemas/asistencia_schema.py",
+        "schemas/calificacion_schema.py",
+        "schemas/docente_schema.py",
+        "schemas/grado_schema.py",
+        "schemas/horario_schema.py",
+        "schemas/rol_schema.py"
+      ]
+    },
+    {
+      "path": "core/__init__.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "isolated",
+        "impact": "solo",
+        "summary": "No local collaboration links yet.",
+        "score": 0
+      },
+      "crossStageLinks": 0,
+      "impactScore": 0,
+      "isDeadCode": true,
+      "isOrphan": true,
+      "isCircular": false,
+      "hotspotScore": 1,
+      "hotspotLevel": "low",
+      "summary": "Core business logic. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": []
+    },
+    {
+      "path": "database/connection.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 8,
+      "size": 244,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 19
+      },
+      "crossStageLinks": 1,
+      "impactScore": 19,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 56,
+      "hotspotLevel": "high",
+      "summary": "Main orchestration code. Functions: get_session",
+      "functions": [
+        "get_session"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "main.py",
+        "routers/ano_escolar_router.py",
+        "routers/asignatura_router.py",
+        "routers/asistencia_docente_router.py",
+        "routers/asistencia_router.py",
+        "routers/aula_router.py",
+        "routers/auth_router.py",
+        "routers/calificacion_router.py",
+        "routers/docentes_router.py",
+        "routers/estudiante_router.py",
+        "routers/evento_router.py",
+        "routers/grado_router.py",
+        "routers/horario_router.py",
+        "routers/inscripcion_router.py",
+        "routers/representante_router.py",
+        "routers/seccion_router.py",
+        "routers/seguridad_router.py",
+        "routers/turno_router.py"
+      ]
+    },
+    {
+      "path": "database/__init__.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "isolated",
+        "impact": "solo",
+        "summary": "No local collaboration links yet.",
+        "score": 0
+      },
+      "crossStageLinks": 0,
+      "impactScore": 0,
+      "isDeadCode": true,
+      "isOrphan": true,
+      "isCircular": false,
+      "hotspotScore": 1,
+      "hotspotLevel": "low",
+      "summary": "Main orchestration code. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": []
+    },
+    {
+      "path": "main.py",
+      "fileType": "entry",
+      "stage": "start",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 83,
+      "size": 2936,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 111
+      },
+      "crossStageLinks": 37,
+      "impactScore": 111,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 78,
+      "hotspotLevel": "critical",
+      "summary": "Entry or startup logic. Functions: read_root",
+      "functions": [
+        "read_root"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "models/asignatura_model.py",
+        "models/asistenciaDocente_model.py",
+        "models/asistencia_model.py",
+        "models/anoEscolar_model.py",
+        "models/aula_model.py",
+        "models/calificacion_model.py",
+        "models/docente_model.py",
+        "models/estudiante_model.py",
+        "models/evento_model.py",
+        "models/grado_model.py",
+        "models/horario_model.py",
+        "models/inscripcion_model.py",
+        "models/representante_model.py",
+        "models/rol_model.py",
+        "models/seccion_model.py",
+        "models/seguridad_model.py",
+        "models/turno_model.py",
+        "models/usuario_model.py",
+        "routers/__init__.py",
+        "routers/asignatura_router.py",
+        "routers/asistencia_docente_router.py",
+        "routers/asistencia_router.py",
+        "routers/ano_escolar_router.py",
+        "routers/aula_router.py",
+        "routers/auth_router.py",
+        "routers/calificacion_router.py",
+        "routers/docentes_router.py",
+        "routers/estudiante_router.py",
+        "routers/evento_router.py",
+        "routers/grado_router.py",
+        "routers/horario_router.py",
+        "routers/inscripcion_router.py",
+        "routers/representante_router.py",
+        "routers/seccion_router.py",
+        "routers/seguridad_router.py",
+        "routers/turno_router.py"
+      ],
+      "usedBy": []
+    },
+    {
+      "path": "models/anoEscolar_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 20,
+      "size": 752,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 9
+      },
+      "crossStageLinks": 1,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 25,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: AnoEscolar",
+      "functions": [],
+      "classes": [
+        "AnoEscolar"
+      ],
+      "exports": [],
+      "imports": [
+        "models/inscripcion_model.py",
+        "models/seccion_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/inscripcion_model.py",
+        "models/seccion_model.py",
+        "services/ano_escolar_service.py",
+        "services/inscripcion_service.py",
+        "services/seccion_service.py"
+      ]
+    },
+    {
+      "path": "models/asignatura_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 18,
+      "size": 777,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 12
+      },
+      "crossStageLinks": 1,
+      "impactScore": 12,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 33,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: Asignatura",
+      "functions": [],
+      "classes": [
+        "Asignatura"
+      ],
+      "exports": [],
+      "imports": [
+        "models/horario_model.py",
+        "models/calificacion_model.py",
+        "models/asistencia_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asistencia_model.py",
+        "models/calificacion_model.py",
+        "models/horario_model.py",
+        "services/asignatura_service.py",
+        "services/asistencia_service.py",
+        "services/calificacion_service.py",
+        "services/horario_service.py"
+      ]
+    },
+    {
+      "path": "models/asistenciaDocente_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 27,
+      "size": 1326,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 8
+      },
+      "crossStageLinks": 1,
+      "impactScore": 8,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 21,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: AsistenciaDocente",
+      "functions": [],
+      "classes": [
+        "AsistenciaDocente"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/docente_model.py",
+        "models/horario_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/docente_model.py",
+        "models/horario_model.py",
+        "services/asistencia_docente_service.py"
+      ]
+    },
+    {
+      "path": "models/asistencia_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 27,
+      "size": 1256,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 11
+      },
+      "crossStageLinks": 1,
+      "impactScore": 11,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 26,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Asistencia",
+      "functions": [],
+      "classes": [
+        "Asistencia"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py",
+        "models/asignatura_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asignatura_model.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py",
+        "services/asistencia_service.py"
+      ]
+    },
+    {
+      "path": "models/aula_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 14,
+      "size": 474,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 1,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Aula",
+      "functions": [],
+      "classes": [
+        "Aula"
+      ],
+      "exports": [],
+      "imports": [
+        "models/horario_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/horario_model.py",
+        "services/aula_service.py",
+        "services/horario_service.py"
+      ]
+    },
+    {
+      "path": "models/calificacion_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 25,
+      "size": 1018,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 8
+      },
+      "crossStageLinks": 1,
+      "impactScore": 8,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 21,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Calificacion",
+      "functions": [],
+      "classes": [
+        "Calificacion"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/estudiante_model.py",
+        "models/asignatura_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asignatura_model.py",
+        "models/estudiante_model.py",
+        "services/calificacion_service.py"
+      ]
+    },
+    {
+      "path": "models/docente_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 31,
+      "size": 1361,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 1,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 35,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: Docente",
+      "functions": [],
+      "classes": [
+        "Docente"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/seccion_model.py",
+        "models/horario_model.py",
+        "models/asistenciaDocente_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asistenciaDocente_model.py",
+        "models/horario_model.py",
+        "models/seccion_model.py",
+        "services/asistencia_docente_service.py",
+        "services/docente_service.py",
+        "services/horario_service.py",
+        "services/seccion_service.py"
+      ]
+    },
+    {
+      "path": "models/estudiante_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 27,
+      "size": 1206,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 15
+      },
+      "crossStageLinks": 1,
+      "impactScore": 15,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 38,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: Estudiante",
+      "functions": [],
+      "classes": [
+        "Estudiante"
+      ],
+      "exports": [],
+      "imports": [
+        "models/representante_model.py",
+        "models/inscripcion_model.py",
+        "models/calificacion_model.py",
+        "models/asistencia_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asistencia_model.py",
+        "models/calificacion_model.py",
+        "models/inscripcion_model.py",
+        "models/representante_model.py",
+        "services/asistencia_service.py",
+        "services/calificacion_service.py",
+        "services/estudiante_service.py",
+        "services/inscripcion_service.py"
+      ]
+    },
+    {
+      "path": "models/evento_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 20,
+      "size": 923,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 1,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 14,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Evento",
+      "functions": [],
+      "classes": [
+        "Evento"
+      ],
+      "exports": [],
+      "imports": [
+        "models/grado_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/grado_model.py",
+        "services/evento_service.py"
+      ]
+    },
+    {
+      "path": "models/grado_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 17,
+      "size": 626,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 10
+      },
+      "crossStageLinks": 1,
+      "impactScore": 10,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 27,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Grado",
+      "functions": [],
+      "classes": [
+        "Grado"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/seccion_model.py",
+        "models/evento_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/evento_model.py",
+        "models/seccion_model.py",
+        "services/evento_service.py",
+        "services/grado_service.py",
+        "services/seccion_service.py"
+      ]
+    },
+    {
+      "path": "models/horario_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 31,
+      "size": 1377,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 15
+      },
+      "crossStageLinks": 1,
+      "impactScore": 15,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 36,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: Horario",
+      "functions": [],
+      "classes": [
+        "Horario"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py",
+        "models/docente_model.py",
+        "models/aula_model.py",
+        "models/seccion_model.py",
+        "models/asignatura_model.py",
+        "models/asistenciaDocente_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/asignatura_model.py",
+        "models/asistenciaDocente_model.py",
+        "models/aula_model.py",
+        "models/docente_model.py",
+        "models/seccion_model.py",
+        "services/horario_service.py"
+      ]
+    },
+    {
+      "path": "models/inscripcion_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 23,
+      "size": 1047,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 10
+      },
+      "crossStageLinks": 1,
+      "impactScore": 10,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 27,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Inscripcion",
+      "functions": [],
+      "classes": [
+        "Inscripcion"
+      ],
+      "exports": [],
+      "imports": [
+        "models/anoEscolar_model.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/anoEscolar_model.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py",
+        "services/asistencia_service.py",
+        "services/inscripcion_service.py"
+      ]
+    },
+    {
+      "path": "models/representante_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 25,
+      "size": 1022,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 1,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Representante",
+      "functions": [],
+      "classes": [
+        "Representante"
+      ],
+      "exports": [],
+      "imports": [
+        "models/estudiante_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/estudiante_model.py",
+        "services/estudiante_service.py",
+        "services/representante_service.py"
+      ]
+    },
+    {
+      "path": "models/rol_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 14,
+      "size": 504,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 1,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Rol",
+      "functions": [],
+      "classes": [
+        "Rol"
+      ],
+      "exports": [],
+      "imports": [
+        "models/usuario_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/usuario_model.py"
+      ]
+    },
+    {
+      "path": "models/seccion_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 34,
+      "size": 1615,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 21
+      },
+      "crossStageLinks": 1,
+      "impactScore": 21,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 54,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Classes: Seccion",
+      "functions": [],
+      "classes": [
+        "Seccion"
+      ],
+      "exports": [],
+      "imports": [
+        "models/docente_model.py",
+        "models/turno_model.py",
+        "models/grado_model.py",
+        "models/horario_model.py",
+        "models/inscripcion_model.py",
+        "models/anoEscolar_model.py",
+        "models/asistencia_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/anoEscolar_model.py",
+        "models/asistencia_model.py",
+        "models/docente_model.py",
+        "models/grado_model.py",
+        "models/horario_model.py",
+        "models/inscripcion_model.py",
+        "models/turno_model.py",
+        "services/asistencia_service.py",
+        "services/horario_service.py",
+        "services/inscripcion_service.py",
+        "services/seccion_service.py"
+      ]
+    },
+    {
+      "path": "models/seguridad_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 17,
+      "size": 619,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 3
+      },
+      "crossStageLinks": 1,
+      "impactScore": 3,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Core business logic. Classes: Pregunta, PreguntaSeg",
+      "functions": [],
+      "classes": [
+        "Pregunta",
+        "PreguntaSeg"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "main.py",
+        "services/seguridad_service.py"
+      ]
+    },
+    {
+      "path": "models/turno_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 14,
+      "size": 479,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 1,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Turno",
+      "functions": [],
+      "classes": [
+        "Turno"
+      ],
+      "exports": [],
+      "imports": [
+        "models/seccion_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/seccion_model.py",
+        "services/seccion_service.py",
+        "services/turno_service.py"
+      ]
+    },
+    {
+      "path": "models/usuario_model.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 15,
+      "size": 599,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 1,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": true,
+      "hotspotScore": 14,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Classes: Usuario",
+      "functions": [],
+      "classes": [
+        "Usuario"
+      ],
+      "exports": [],
+      "imports": [
+        "models/rol_model.py"
+      ],
+      "usedBy": [
+        "main.py",
+        "models/rol_model.py",
+        "services/auth_service.py"
+      ]
+    },
+    {
+      "path": "models/__init__.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "isolated",
+        "impact": "solo",
+        "summary": "No local collaboration links yet.",
+        "score": 0
+      },
+      "crossStageLinks": 0,
+      "impactScore": 0,
+      "isDeadCode": true,
+      "isOrphan": true,
+      "isCircular": false,
+      "hotspotScore": 1,
+      "hotspotLevel": "low",
+      "summary": "Core business logic. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": []
+    },
+    {
+      "path": "routers/ano_escolar_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 66,
+      "size": 2355,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_ano_escolar, get_anos_escolares, get_ano_escolar, update_ano_escolar_complete",
+      "functions": [
+        "create_ano_escolar",
+        "get_anos_escolares",
+        "get_ano_escolar",
+        "update_ano_escolar_complete",
+        "update_ano_escolar_partial",
+        "delete_ano_escolar"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/anoEscolar_schema.py",
+        "services/__init__.py",
+        "services/ano_escolar_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/asignatura_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 64,
+      "size": 2369,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_asignatura, get_asignaturas, get_asignatura, update_asignatura_complete",
+      "functions": [
+        "create_asignatura",
+        "get_asignaturas",
+        "get_asignatura",
+        "update_asignatura_complete",
+        "update_asignatura_partial",
+        "delete_asignatura"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/asignatura_schema.py",
+        "services/__init__.py",
+        "services/asignatura_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/asistencia_docente_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 66,
+      "size": 2635,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_asistencia, get_asistencias, get_asistencia_by_id, get_asistencias_por_docente",
+      "functions": [
+        "create_asistencia",
+        "get_asistencias",
+        "get_asistencia_by_id",
+        "get_asistencias_por_docente",
+        "update_asistencia",
+        "delete_asistencia"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/asistenciaDocente_schema.py",
+        "services/__init__.py",
+        "services/asistencia_docente_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/asistencia_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 46,
+      "size": 2401,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 13
+      },
+      "crossStageLinks": 4,
+      "impactScore": 13,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 15,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_asistencia, get_asistencias, get_asistencia, get_asistencias_por_estudiante",
+      "functions": [
+        "create_asistencia",
+        "get_asistencias",
+        "get_asistencia",
+        "get_asistencias_por_estudiante",
+        "get_asistencias_por_seccion",
+        "update_asistencia_complete",
+        "update_asistencia_partial",
+        "delete_asistencia"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/asistencia_schema.py",
+        "services/__init__.py",
+        "services/asistencia_service.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/aula_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 64,
+      "size": 2054,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_aula, get_aulas, get_aula, update_aula_complete",
+      "functions": [
+        "create_aula",
+        "get_aulas",
+        "get_aula",
+        "update_aula_complete",
+        "update_aula_partial",
+        "delete_aula"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/aula_schema.py",
+        "services/__init__.py",
+        "services/aula_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/auth_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 25,
+      "size": 1176,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 10
+      },
+      "crossStageLinks": 3,
+      "impactScore": 10,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: registrar_usuario, iniciar_sesion",
+      "functions": [
+        "registrar_usuario",
+        "iniciar_sesion"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/usuario_schema.py",
+        "services/auth_service.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/calificacion_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 42,
+      "size": 2238,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 13
+      },
+      "crossStageLinks": 4,
+      "impactScore": 13,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 15,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_calificacion, get_calificaciones, get_calificacion, get_calificaciones_por_estudiante",
+      "functions": [
+        "create_calificacion",
+        "get_calificaciones",
+        "get_calificacion",
+        "get_calificaciones_por_estudiante",
+        "update_calificacion_complete",
+        "update_calificacion_partial",
+        "delete_calificacion"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/calificacion_schema.py",
+        "services/__init__.py",
+        "services/calificacion_service.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/docentes_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 85,
+      "size": 3047,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 11
+      },
+      "crossStageLinks": 3,
+      "impactScore": 11,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 15,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_docente, get_docente, get_docentes_por_estado, update_docente_patch",
+      "functions": [
+        "create_docente",
+        "get_docente",
+        "get_docentes_por_estado",
+        "update_docente_patch",
+        "update_docente_put",
+        "delete_docente"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "schemas/docente_schema.py",
+        "database/connection.py",
+        "services/docente_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/estudiante_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 72,
+      "size": 2688,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_estudiante, reactivate_estudiante, get_estudiantes, get_estudiante",
+      "functions": [
+        "create_estudiante",
+        "reactivate_estudiante",
+        "get_estudiantes",
+        "get_estudiante",
+        "update_estudiante_complete",
+        "update_estudiante_partial",
+        "delete_estudiante"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/estudiante_schema.py",
+        "services/__init__.py",
+        "services/estudiante_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/evento_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 74,
+      "size": 2534,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_evento, get_eventos, get_evento, get_eventos_por_grado",
+      "functions": [
+        "create_evento",
+        "get_eventos",
+        "get_evento",
+        "get_eventos_por_grado",
+        "update_evento_complete",
+        "update_evento_partial",
+        "delete_evento"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/evento_schema.py",
+        "services/__init__.py",
+        "services/evento_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/grado_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 64,
+      "size": 2094,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_grado, get_grados, get_grado, update_grado_complete",
+      "functions": [
+        "create_grado",
+        "get_grados",
+        "get_grado",
+        "update_grado_complete",
+        "update_grado_partial",
+        "delete_grado"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/grado_schema.py",
+        "services/__init__.py",
+        "services/grado_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/horario_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 76,
+      "size": 2682,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_horario, get_horarios, get_horario, get_horarios_por_docente",
+      "functions": [
+        "create_horario",
+        "get_horarios",
+        "get_horario",
+        "get_horarios_por_docente",
+        "update_horario_complete",
+        "update_horario_partial",
+        "delete_horario"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/horario_schema.py",
+        "services/__init__.py",
+        "services/horario_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/inscripcion_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 90,
+      "size": 3514,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 17
+      },
+      "crossStageLinks": 5,
+      "impactScore": 17,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 20,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_inscripcion, get_inscripciones, listar_estudiantes_por_seccion, get_inscripcion",
+      "functions": [
+        "create_inscripcion",
+        "get_inscripciones",
+        "listar_estudiantes_por_seccion",
+        "get_inscripcion",
+        "update_inscripcion_complete",
+        "update_inscripcion_partial",
+        "delete_inscripcion"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/inscripcion_schema.py",
+        "schemas/estudiante_schema.py",
+        "services/__init__.py",
+        "services/inscripcion_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/representante_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 68,
+      "size": 2827,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_representante, get_representantes, get_representante, update_representante_complete",
+      "functions": [
+        "create_representante",
+        "get_representantes",
+        "get_representante",
+        "update_representante_complete",
+        "update_representante_partial",
+        "delete_representante"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/representante_schema.py",
+        "services/__init__.py",
+        "services/representante_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/seccion_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 66,
+      "size": 2276,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_seccion, get_secciones, get_seccion, update_seccion_complete",
+      "functions": [
+        "create_seccion",
+        "get_secciones",
+        "get_seccion",
+        "update_seccion_complete",
+        "update_seccion_partial",
+        "delete_seccion"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/seccion_schema.py",
+        "services/__init__.py",
+        "services/seccion_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/seguridad_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 43,
+      "size": 1487,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 13
+      },
+      "crossStageLinks": 4,
+      "impactScore": 13,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 15,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: listar_preguntas_activas, registrar_pregunta_usuario, validar_respuesta_usuario",
+      "functions": [
+        "listar_preguntas_activas",
+        "registrar_pregunta_usuario",
+        "validar_respuesta_usuario"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/seguridad_schema.py",
+        "services/__init__.py",
+        "services/seguridad_service.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/turno_router.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 64,
+      "size": 2087,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 14
+      },
+      "crossStageLinks": 4,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 17,
+      "hotspotLevel": "medium",
+      "summary": "Main orchestration code. Functions: create_turno, get_turnos, get_turno, update_turno_complete",
+      "functions": [
+        "create_turno",
+        "get_turnos",
+        "get_turno",
+        "update_turno_complete",
+        "update_turno_partial",
+        "delete_turno"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "database/connection.py",
+        "schemas/turno_schema.py",
+        "services/__init__.py",
+        "services/turno_service.py",
+        "security/dependencies.py"
+      ],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "routers/__init__.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 2
+      },
+      "crossStageLinks": 1,
+      "impactScore": 2,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 4,
+      "hotspotLevel": "low",
+      "summary": "Main orchestration code. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "main.py"
+      ]
+    },
+    {
+      "path": "schemas/anoEscolar_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 28,
+      "size": 1059,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: AnoEscolarBase, AnoEscolarCreate, AnoEscolarPut",
+      "functions": [],
+      "classes": [
+        "AnoEscolarBase",
+        "AnoEscolarCreate",
+        "AnoEscolarPut",
+        "AnoEscolarUpdate",
+        "AnoEscolarRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/ano_escolar_router.py",
+        "services/ano_escolar_service.py"
+      ]
+    },
+    {
+      "path": "schemas/asignatura_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 21,
+      "size": 703,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: AsignaturaBase, AsignaturaCreate, AsignaturaPut",
+      "functions": [],
+      "classes": [
+        "AsignaturaBase",
+        "AsignaturaCreate",
+        "AsignaturaPut",
+        "AsignaturaUpdate",
+        "AsignaturaRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/asignatura_router.py",
+        "services/asignatura_service.py"
+      ]
+    },
+    {
+      "path": "schemas/asistenciaDocente_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 45,
+      "size": 1471,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: AsistenciaDocenteBase, AsistenciaDocenteCreate, AsistenciaDocenteSalida",
+      "functions": [],
+      "classes": [
+        "AsistenciaDocenteBase",
+        "AsistenciaDocenteCreate",
+        "AsistenciaDocenteSalida",
+        "AsistenciaDocenteUpdate",
+        "AsistenciaDocenteRead",
+        "ReporteCumplimientoDocente"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/asistencia_docente_router.py",
+        "services/asistencia_docente_service.py"
+      ]
+    },
+    {
+      "path": "schemas/asistencia_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 32,
+      "size": 1312,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: AsistenciaBase, AsistenciaCreate, AsistenciaPut",
+      "functions": [],
+      "classes": [
+        "AsistenciaBase",
+        "AsistenciaCreate",
+        "AsistenciaPut",
+        "AsistenciaUpdate",
+        "AsistenciaRead"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/asistencia_router.py",
+        "services/asistencia_service.py"
+      ]
+    },
+    {
+      "path": "schemas/aula_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 23,
+      "size": 676,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: AulaBase, AulaCreate, AulaPut",
+      "functions": [],
+      "classes": [
+        "AulaBase",
+        "AulaCreate",
+        "AulaPut",
+        "AulaUpdate",
+        "AulaRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/aula_router.py",
+        "services/aula_service.py"
+      ]
+    },
+    {
+      "path": "schemas/calificacion_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 30,
+      "size": 1184,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: CalificacionBase, CalificacionCreate, CalificacionPut",
+      "functions": [],
+      "classes": [
+        "CalificacionBase",
+        "CalificacionCreate",
+        "CalificacionPut",
+        "CalificacionUpdate",
+        "CalificacionRead"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/calificacion_router.py",
+        "services/calificacion_service.py"
+      ]
+    },
+    {
+      "path": "schemas/docente_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 38,
+      "size": 1791,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: DocenteBase, DocenteCreate, DocentePut",
+      "functions": [],
+      "classes": [
+        "DocenteBase",
+        "DocenteCreate",
+        "DocentePut",
+        "DocenteUpdate",
+        "DocenteRead"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/docentes_router.py",
+        "services/docente_service.py"
+      ]
+    },
+    {
+      "path": "schemas/estudiante_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 30,
+      "size": 1126,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: EstudianteBase, EstudianteCreate, EstudiantePut",
+      "functions": [],
+      "classes": [
+        "EstudianteBase",
+        "EstudianteCreate",
+        "EstudiantePut",
+        "EstudianteUpdate",
+        "EstudianteRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/estudiante_router.py",
+        "routers/inscripcion_router.py",
+        "services/estudiante_service.py"
+      ]
+    },
+    {
+      "path": "schemas/evento_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 30,
+      "size": 1187,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: EventoBase, EventoCreate, EventoPut",
+      "functions": [],
+      "classes": [
+        "EventoBase",
+        "EventoCreate",
+        "EventoPut",
+        "EventoUpdate",
+        "EventoRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/evento_router.py",
+        "services/evento_service.py"
+      ]
+    },
+    {
+      "path": "schemas/grado_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 22,
+      "size": 648,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: GradoBase, GradoCreate, GradoPut",
+      "functions": [],
+      "classes": [
+        "GradoBase",
+        "GradoCreate",
+        "GradoPut",
+        "GradoUpdate",
+        "GradoRead"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/grado_router.py",
+        "services/grado_service.py"
+      ]
+    },
+    {
+      "path": "schemas/horario_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 35,
+      "size": 1350,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 9
+      },
+      "crossStageLinks": 3,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: HorarioBase, HorarioCreate, HorarioPut",
+      "functions": [],
+      "classes": [
+        "HorarioBase",
+        "HorarioCreate",
+        "HorarioPut",
+        "HorarioUpdate",
+        "HorarioRead"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "routers/horario_router.py",
+        "services/horario_service.py"
+      ]
+    },
+    {
+      "path": "schemas/inscripcion_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 28,
+      "size": 1057,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: InscripcionBase, InscripcionCreate, InscripcionPut",
+      "functions": [],
+      "classes": [
+        "InscripcionBase",
+        "InscripcionCreate",
+        "InscripcionPut",
+        "InscripcionUpdate",
+        "InscripcionRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/inscripcion_router.py",
+        "services/inscripcion_service.py"
+      ]
+    },
+    {
+      "path": "schemas/representante_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 35,
+      "size": 1653,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 10,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: RepresentanteBase, RepresentanteCreate, RepresentantePut",
+      "functions": [],
+      "classes": [
+        "RepresentanteBase",
+        "RepresentanteCreate",
+        "RepresentantePut",
+        "RepresentanteUpdate",
+        "RepresentanteRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/representante_router.py",
+        "services/representante_service.py"
+      ]
+    },
+    {
+      "path": "schemas/rol_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 14,
+      "size": 324,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 3
+      },
+      "crossStageLinks": 1,
+      "impactScore": 3,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 8,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: RolCreate, RolResponse, Config",
+      "functions": [],
+      "classes": [
+        "RolCreate",
+        "RolResponse",
+        "Config"
+      ],
+      "exports": [],
+      "imports": [
+        "core/enums.py"
+      ],
+      "usedBy": [
+        "schemas/usuario_schema.py"
+      ]
+    },
+    {
+      "path": "schemas/seccion_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 31,
+      "size": 1209,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: SeccionBase, SeccionCreate, SeccionPut",
+      "functions": [],
+      "classes": [
+        "SeccionBase",
+        "SeccionCreate",
+        "SeccionPut",
+        "SeccionUpdate",
+        "SeccionRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/seccion_router.py",
+        "services/seccion_service.py"
+      ]
+    },
+    {
+      "path": "schemas/seguridad_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 41,
+      "size": 1084,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 10,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: PreguntaBase, PreguntaRead, Config",
+      "functions": [],
+      "classes": [
+        "PreguntaBase",
+        "PreguntaRead",
+        "Config",
+        "PreguntaSegCreate",
+        "PreguntaSegRead",
+        "ValidarRespuesta"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/seguridad_router.py",
+        "services/seguridad_service.py"
+      ]
+    },
+    {
+      "path": "schemas/turno_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 21,
+      "size": 661,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 4
+      },
+      "crossStageLinks": 2,
+      "impactScore": 4,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 9,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Classes: TurnoBase, TurnoCreate, TurnoPut",
+      "functions": [],
+      "classes": [
+        "TurnoBase",
+        "TurnoCreate",
+        "TurnoPut",
+        "TurnoUpdate",
+        "TurnoRead"
+      ],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/turno_router.py",
+        "services/turno_service.py"
+      ]
+    },
+    {
+      "path": "schemas/usuario_schema.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 29,
+      "size": 871,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Support or shared utility code. Classes: UsuarioCreate, UsuarioLogin, UsuarioResponse",
+      "functions": [],
+      "classes": [
+        "UsuarioCreate",
+        "UsuarioLogin",
+        "UsuarioResponse",
+        "Config",
+        "TokenResponse"
+      ],
+      "exports": [],
+      "imports": [
+        "schemas/rol_schema.py"
+      ],
+      "usedBy": [
+        "routers/auth_router.py",
+        "services/auth_service.py"
+      ]
+    },
+    {
+      "path": "schemas/__init__.py",
+      "fileType": "module",
+      "stage": "helpers",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "isolated",
+        "impact": "solo",
+        "summary": "No local collaboration links yet.",
+        "score": 0
+      },
+      "crossStageLinks": 0,
+      "impactScore": 0,
+      "isDeadCode": true,
+      "isOrphan": true,
+      "isCircular": false,
+      "hotspotScore": 1,
+      "hotspotLevel": "low",
+      "summary": "Support or shared utility code. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": []
+    },
+    {
+      "path": "security/dependencies.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 47,
+      "size": 1611,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "hub",
+        "summary": "A shared dependency reused by many files.",
+        "score": 14
+      },
+      "crossStageLinks": 0,
+      "impactScore": 14,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 45,
+      "hotspotLevel": "high",
+      "summary": "Main orchestration code. Functions: get_current_user, require_roles, role_checker",
+      "functions": [
+        "get_current_user",
+        "require_roles",
+        "role_checker"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "security/jwt.py"
+      ],
+      "usedBy": [
+        "routers/ano_escolar_router.py",
+        "routers/asignatura_router.py",
+        "routers/asistencia_docente_router.py",
+        "routers/aula_router.py",
+        "routers/docentes_router.py",
+        "routers/estudiante_router.py",
+        "routers/evento_router.py",
+        "routers/grado_router.py",
+        "routers/horario_router.py",
+        "routers/inscripcion_router.py",
+        "routers/representante_router.py",
+        "routers/seccion_router.py",
+        "routers/turno_router.py"
+      ]
+    },
+    {
+      "path": "security/jwt.py",
+      "fileType": "module",
+      "stage": "main",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 9,
+      "size": 324,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 1
+      },
+      "crossStageLinks": 0,
+      "impactScore": 1,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 5,
+      "hotspotLevel": "low",
+      "summary": "Main orchestration code. Functions: decode_access_token",
+      "functions": [
+        "decode_access_token"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "security/dependencies.py"
+      ]
+    },
+    {
+      "path": "services/ano_escolar_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 63,
+      "size": 2539,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_ano_escolar_service, get_anos_escolares_service, get_ano_escolar_by_id_service, update_ano_escolar_complete_service",
+      "functions": [
+        "create_ano_escolar_service",
+        "get_anos_escolares_service",
+        "get_ano_escolar_by_id_service",
+        "update_ano_escolar_complete_service",
+        "update_ano_escolar_partial_service",
+        "delete_ano_escolar_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/anoEscolar_model.py",
+        "schemas/anoEscolar_schema.py"
+      ],
+      "usedBy": [
+        "routers/ano_escolar_router.py"
+      ]
+    },
+    {
+      "path": "services/asignatura_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 79,
+      "size": 3384,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_asignatura, get_asignaturas, get_asignatura, update_asignatura_complete",
+      "functions": [
+        "create_asignatura",
+        "get_asignaturas",
+        "get_asignatura",
+        "update_asignatura_complete",
+        "update_asignatura_partial",
+        "delete_asignatura"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/asignatura_model.py",
+        "schemas/asignatura_schema.py"
+      ],
+      "usedBy": [
+        "routers/asignatura_router.py"
+      ]
+    },
+    {
+      "path": "services/asistencia_docente_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 53,
+      "size": 2562,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 2,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 13,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_asistencia_docente_service, get_asistencias_docentes_service, get_asistencia_docente_by_id_service, get_asistencias_por_docente_service",
+      "functions": [
+        "create_asistencia_docente_service",
+        "get_asistencias_docentes_service",
+        "get_asistencia_docente_by_id_service",
+        "get_asistencias_por_docente_service",
+        "update_asistencia_docente_service",
+        "delete_asistencia_docente_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/asistenciaDocente_model.py",
+        "models/docente_model.py",
+        "schemas/asistenciaDocente_schema.py"
+      ],
+      "usedBy": [
+        "routers/asistencia_docente_router.py"
+      ]
+    },
+    {
+      "path": "services/asistencia_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 119,
+      "size": 5280,
+      "collaboration": {
+        "status": "active",
+        "impact": "orchestrator",
+        "summary": "Pulls together several files to do its work.",
+        "score": 9
+      },
+      "crossStageLinks": 2,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 20,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_foraneas, verificar_estudiante_inscrito, create_asistencia_service, get_asistencias_service",
+      "functions": [
+        "_validar_foraneas",
+        "verificar_estudiante_inscrito",
+        "create_asistencia_service",
+        "get_asistencias_service",
+        "get_asistencia_by_id_service",
+        "get_asistencias_por_estudiante_service",
+        "get_asistencias_por_seccion_service",
+        "update_asistencia_complete_service",
+        "update_asistencia_partial_service",
+        "delete_asistencia_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/asistencia_model.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py",
+        "models/asignatura_model.py",
+        "models/inscripcion_model.py",
+        "schemas/asistencia_schema.py"
+      ],
+      "usedBy": [
+        "routers/asistencia_router.py"
+      ]
+    },
+    {
+      "path": "services/aula_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 79,
+      "size": 2900,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_aula, get_aulas, get_aula, update_aula_complete",
+      "functions": [
+        "create_aula",
+        "get_aulas",
+        "get_aula",
+        "update_aula_complete",
+        "update_aula_partial",
+        "delete_aula"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/aula_model.py",
+        "schemas/aula_schema.py"
+      ],
+      "usedBy": [
+        "routers/aula_router.py"
+      ]
+    },
+    {
+      "path": "services/auth_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 90,
+      "size": 3391,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: encriptar_password, verificar_password, crear_token_jwt, registrar_nuevo_usuario",
+      "functions": [
+        "encriptar_password",
+        "verificar_password",
+        "crear_token_jwt",
+        "registrar_nuevo_usuario",
+        "autenticar_usuario"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/usuario_model.py",
+        "schemas/usuario_schema.py"
+      ],
+      "usedBy": [
+        "routers/auth_router.py"
+      ]
+    },
+    {
+      "path": "services/calificacion_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 109,
+      "size": 5025,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 7
+      },
+      "crossStageLinks": 2,
+      "impactScore": 7,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 16,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_foraneas, _validar_duplicidad_calificacion, create_calificacion_service, get_calificaciones_service",
+      "functions": [
+        "_validar_foraneas",
+        "_validar_duplicidad_calificacion",
+        "create_calificacion_service",
+        "get_calificaciones_service",
+        "get_calificacion_by_id_service",
+        "get_calificaciones_por_estudiante_service",
+        "update_calificacion_complete_service",
+        "update_calificacion_partial_service",
+        "delete_calificacion_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/calificacion_model.py",
+        "models/estudiante_model.py",
+        "models/asignatura_model.py",
+        "schemas/calificacion_schema.py"
+      ],
+      "usedBy": [
+        "routers/calificacion_router.py"
+      ]
+    },
+    {
+      "path": "services/docente_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 68,
+      "size": 2566,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_docente_service, get_docente_by_cedula_service, get_docentes_por_estado_service, update_docente_partial_service",
+      "functions": [
+        "create_docente_service",
+        "get_docente_by_cedula_service",
+        "get_docentes_por_estado_service",
+        "update_docente_partial_service",
+        "update_docente_full_service",
+        "delete_docente_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/docente_model.py",
+        "schemas/docente_schema.py"
+      ],
+      "usedBy": [
+        "routers/docentes_router.py"
+      ]
+    },
+    {
+      "path": "services/estudiante_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 116,
+      "size": 4996,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 2,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 14,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_representante, create_estudiante, reactivar_estudiante, get_estudiantes",
+      "functions": [
+        "_validar_representante",
+        "create_estudiante",
+        "reactivar_estudiante",
+        "get_estudiantes",
+        "get_estudiante",
+        "update_estudiante_complete",
+        "update_estudiante_partial",
+        "delete_estudiante"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/estudiante_model.py",
+        "models/representante_model.py",
+        "schemas/estudiante_schema.py"
+      ],
+      "usedBy": [
+        "routers/estudiante_router.py"
+      ]
+    },
+    {
+      "path": "services/evento_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 106,
+      "size": 4675,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 6
+      },
+      "crossStageLinks": 2,
+      "impactScore": 6,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 14,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_grado, _validar_conflicto_evento, create_evento_service, get_eventos_service",
+      "functions": [
+        "_validar_grado",
+        "_validar_conflicto_evento",
+        "create_evento_service",
+        "get_eventos_service",
+        "get_evento_by_id_service",
+        "get_eventos_por_grado_service",
+        "update_evento_complete_service",
+        "update_evento_partial_service",
+        "delete_evento_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/evento_model.py",
+        "models/grado_model.py",
+        "schemas/evento_schema.py"
+      ],
+      "usedBy": [
+        "routers/evento_router.py"
+      ]
+    },
+    {
+      "path": "services/grado_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 79,
+      "size": 2966,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_grado, get_grados, get_grado, update_grado_complete",
+      "functions": [
+        "create_grado",
+        "get_grados",
+        "get_grado",
+        "update_grado_complete",
+        "update_grado_partial",
+        "delete_grado"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/grado_model.py",
+        "schemas/grado_schema.py"
+      ],
+      "usedBy": [
+        "routers/grado_router.py"
+      ]
+    },
+    {
+      "path": "services/horario_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 153,
+      "size": 6269,
+      "collaboration": {
+        "status": "active",
+        "impact": "orchestrator",
+        "summary": "Pulls together several files to do its work.",
+        "score": 9
+      },
+      "crossStageLinks": 2,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 20,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_foraneas, _validar_conflicto_horario, create_horario_service, get_horarios_service",
+      "functions": [
+        "_validar_foraneas",
+        "_validar_conflicto_horario",
+        "create_horario_service",
+        "get_horarios_service",
+        "get_horario_by_id_service",
+        "get_horarios_por_docente_service",
+        "update_horario_complete_service",
+        "update_horario_partial_service",
+        "delete_horario_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/horario_model.py",
+        "models/docente_model.py",
+        "models/aula_model.py",
+        "models/seccion_model.py",
+        "models/asignatura_model.py",
+        "schemas/horario_schema.py"
+      ],
+      "usedBy": [
+        "routers/horario_router.py"
+      ]
+    },
+    {
+      "path": "services/inscripcion_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 113,
+      "size": 5306,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 8
+      },
+      "crossStageLinks": 2,
+      "impactScore": 8,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 18,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_foraneas, _validar_duplicidad_inscripcion, create_inscripcion_service, get_inscripciones_service",
+      "functions": [
+        "_validar_foraneas",
+        "_validar_duplicidad_inscripcion",
+        "create_inscripcion_service",
+        "get_inscripciones_service",
+        "get_estudiantes_por_seccion_service",
+        "get_inscripcion_by_id_service",
+        "update_inscripcion_complete_service",
+        "update_inscripcion_partial_service",
+        "delete_inscripcion_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/inscripcion_model.py",
+        "models/estudiante_model.py",
+        "models/seccion_model.py",
+        "models/anoEscolar_model.py",
+        "schemas/inscripcion_schema.py"
+      ],
+      "usedBy": [
+        "routers/inscripcion_router.py"
+      ]
+    },
+    {
+      "path": "services/representante_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 114,
+      "size": 5077,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 12,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_representante, get_representantes, get_representante, update_representante_complete",
+      "functions": [
+        "create_representante",
+        "get_representantes",
+        "get_representante",
+        "update_representante_complete",
+        "update_representante_partial",
+        "delete_representante"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/representante_model.py",
+        "schemas/representante_schema.py"
+      ],
+      "usedBy": [
+        "routers/representante_router.py"
+      ]
+    },
+    {
+      "path": "services/seccion_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 87,
+      "size": 3722,
+      "collaboration": {
+        "status": "active",
+        "impact": "orchestrator",
+        "summary": "Pulls together several files to do its work.",
+        "score": 9
+      },
+      "crossStageLinks": 2,
+      "impactScore": 9,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 19,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: _validar_foraneas, create_seccion_service, get_secciones_service, get_seccion_by_id_service",
+      "functions": [
+        "_validar_foraneas",
+        "create_seccion_service",
+        "get_secciones_service",
+        "get_seccion_by_id_service",
+        "update_seccion_complete_service",
+        "update_seccion_partial_service",
+        "delete_seccion_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/seccion_model.py",
+        "models/turno_model.py",
+        "models/grado_model.py",
+        "models/docente_model.py",
+        "models/anoEscolar_model.py",
+        "schemas/seccion_schema.py"
+      ],
+      "usedBy": [
+        "routers/seccion_router.py"
+      ]
+    },
+    {
+      "path": "services/seguridad_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 61,
+      "size": 2404,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: get_preguntas_activas_service, registrar_pregunta_usuario_service, validar_respuesta_usuario_service",
+      "functions": [
+        "get_preguntas_activas_service",
+        "registrar_pregunta_usuario_service",
+        "validar_respuesta_usuario_service"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/seguridad_model.py",
+        "schemas/seguridad_schema.py"
+      ],
+      "usedBy": [
+        "routers/seguridad_router.py"
+      ]
+    },
+    {
+      "path": "services/turno_service.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 80,
+      "size": 3018,
+      "collaboration": {
+        "status": "connected",
+        "impact": "leaf",
+        "summary": "Part of the local code flow with a focused role.",
+        "score": 5
+      },
+      "crossStageLinks": 2,
+      "impactScore": 5,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 11,
+      "hotspotLevel": "medium",
+      "summary": "Core business logic. Functions: create_turno, get_turnos, get_turno, update_turno_complete",
+      "functions": [
+        "create_turno",
+        "get_turnos",
+        "get_turno",
+        "update_turno_complete",
+        "update_turno_partial",
+        "delete_turno"
+      ],
+      "classes": [],
+      "exports": [],
+      "imports": [
+        "models/turno_model.py",
+        "schemas/turno_schema.py"
+      ],
+      "usedBy": [
+        "routers/turno_router.py"
+      ]
+    },
+    {
+      "path": "services/__init__.py",
+      "fileType": "module",
+      "stage": "core",
+      "lang": "py",
+      "ext": ".py",
+      "lines": 1,
+      "size": 0,
+      "collaboration": {
+        "status": "collaborative",
+        "impact": "bridge",
+        "summary": "Connects multiple parts of the code flow.",
+        "score": 45
+      },
+      "crossStageLinks": 15,
+      "impactScore": 45,
+      "isDeadCode": false,
+      "isOrphan": false,
+      "isCircular": false,
+      "hotspotScore": 46,
+      "hotspotLevel": "high",
+      "summary": "Core business logic. Type: module",
+      "functions": [],
+      "classes": [],
+      "exports": [],
+      "imports": [],
+      "usedBy": [
+        "routers/ano_escolar_router.py",
+        "routers/asignatura_router.py",
+        "routers/asistencia_docente_router.py",
+        "routers/asistencia_router.py",
+        "routers/aula_router.py",
+        "routers/calificacion_router.py",
+        "routers/estudiante_router.py",
+        "routers/evento_router.py",
+        "routers/grado_router.py",
+        "routers/horario_router.py",
+        "routers/inscripcion_router.py",
+        "routers/representante_router.py",
+        "routers/seccion_router.py",
+        "routers/seguridad_router.py",
+        "routers/turno_router.py"
+      ]
+    }
+  ]
+}
