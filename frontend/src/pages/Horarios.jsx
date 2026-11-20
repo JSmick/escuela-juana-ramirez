@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
-import { getHorarios, getHorariosPorDocente, createHorario, deleteHorario } from '../services/horarioService';
-
+import { useState, useEffect, useMemo } from 'react';
+import {
+  getHorarios,
+  getHorariosPorDocente,
+  createHorario,
+  updateHorario,
+  deleteHorario,
+} from '../services/horarioService';
 import { getDocentes } from '../services/docenteService';
 import { getAulas } from '../services/aulaService';
 import { getSecciones } from '../services/seccionService';
-import { getGrados } from '../services/gradoService'; // Asegúrate de importar tu servicio de grados
+import { getGrados } from '../services/gradoService';
 import { getAsignaturas } from '../services/asignaturaService';
 
 export default function Horarios() {
@@ -16,21 +21,23 @@ export default function Horarios() {
   const [asignaturas, setAsignaturas] = useState([]);
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [idEditando, setIdEditando] = useState(null);
   const [cargando, setCargando] = useState(false);
-
-  // 👉 Pégalo aquí:
+  const [busqueda, setBusqueda] = useState('');
   const [filtroDocente, setFiltroDocente] = useState('');
+
   const rolActual = localStorage.getItem('sesion_juana')?.toLowerCase();
   const idDocenteLogueado = localStorage.getItem('id_docente');
 
   const [formulario, setFormulario] = useState({
     dia: 'Lunes',
-    hora_inicio: '08:00:00', // Formato de 24h obligatorio para FastAPI
-    hora_fin: '09:35:00',     // Formato de 24h obligatorio para FastAPI
+    hora_inicio: '08:00:00',
+    hora_fin: '09:35:00',
     id_aula: '',
     id_seccion: '',
     id_asig: '',
-    id_docent: ''
+    id_docent: '',
   });
 
   useEffect(() => {
@@ -38,180 +45,300 @@ export default function Horarios() {
   }, []);
 
   const cargarDatosIniciales = async () => {
+    setCargando(true);
+
+    let docData = [];
+
+    // Docentes
     try {
-      setCargando(true);
+      docData = await getDocentes();
+      setDocentes(Array.isArray(docData) ? docData : []);
+    } catch (e) {
+      console.error('Error docentes:', e.response?.status, e.response?.data);
+      setDocentes([]);
+    }
 
-      const docData = await getDocentes();
-      setDocentes(docData);
+    // Aulas
+    try {
+      const data = await getAulas();
+      setAulas(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Error aulas:', e.response?.status, e.response?.data);
+      setAulas([]);
+    }
 
-      let peticionHorarios;
+    // Secciones
+    try {
+      const data = await getSecciones();
+      setSecciones(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Error secciones:', e.response?.status, e.response?.data);
+      setSecciones([]);
+    }
+
+    // Asignaturas
+    try {
+      const data = await getAsignaturas();
+      setAsignaturas(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Error asignaturas:', e.response?.status, e.response?.data);
+      setAsignaturas([]);
+    }
+
+    // Grados
+    try {
+      const data = await getGrados();
+      setGrados(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Error grados:', e.response?.status, e.response?.data);
+      setGrados([]);
+    }
+
+    // HORARIOS (lo más importante)
+    try {
+      let horData = [];
+
       if (rolActual === 'docente') {
+        const idUsuario = localStorage.getItem('id_docente'); // es el id_user del token
+        console.log('id_user logueado:', idUsuario);
+        console.log('docentes recibidos:', docData);
 
-        const idUserLogueado = idDocenteLogueado;
-        // const idDocente = idDocenteLogueado; Usa el ID guardado o el 5 por defecto si no lo encuentra
+        const docenteEncontrado = docData.find(
+          (d) => String(d.id_user) === String(idUsuario)
+        );
 
-        const docenteEncontrado = docData.find(d => String(d.id_user) === String(idUserLogueado));
-
-        const idDocenteReal = docenteEncontrado ? docenteEncontrado.id_docen : idUserLogueado;
-
-        console.log("Usuario ID:", idUserLogueado, "-> Docente ID real:", idDocenteReal);
+        console.log('docente encontrado:', docenteEncontrado);
 
         if (!docenteEncontrado) {
-        alert('No se encontró tu perfil de docente. Contacta al administrador.');
-        setHorarios([]);
-        return;
+          alert('No se encontró tu perfil de docente (revisa id_user en /docente).');
+          setHorarios([]);
+        } else {
+          horData = await getHorariosPorDocente(docenteEncontrado.id_docen);
+          console.log('horarios del docente:', horData);
+        }
+      } else {
+        // ADMIN
+        horData = await getHorarios();
+        console.log('todos los horarios (admin):', horData);
       }
 
-        peticionHorarios = getHorariosPorDocente(docenteEncontrado.id_docen);
-      } else {
-        peticionHorarios = filtroDocente ? getHorariosPorDocente(filtroDocente) : getHorarios();
-      }
-      const [horData, aulData, secData, asigData, gradData] = await Promise.all([
-        peticionHorarios,
-        //getHorarios(),
-        //getDocentes(),
-        getAulas(),
-        getSecciones(),
-        getAsignaturas(),
-        getGrados() // <-- Cargamos los grados
-      ]);
-      setHorarios(horData);
-      setDocentes(docData);
-      setAulas(aulData);
-      setSecciones(secData);
-      setAsignaturas(asigData);
-      setGrados(gradData); // <-- Guardamos los grados en su estado
-    } catch (error) {
-      console.error("Error al cargar datos de horarios:", error);
-      alert("No se pudieron cargar los datos necesarios para el horario.");
-    } finally {
-      setCargando(false);
-    }
-  };
-  const manejarFiltroAdmin = async (e) => {
-    const idSeleccionado = e.target.value;
-    setFiltroDocente(idSeleccionado);
-    setCargando(true);
-    try {
-      if (idSeleccionado === '') {
-        const todos = await getHorarios();
-        setHorarios(todos);
-      } else {
-        const filtrados = await getHorariosPorDocente(idSeleccionado);
-        setHorarios(filtrados);
-      }
-    } catch (error) {
-      console.error("Error al cargar datos de horarios:", error);
-      alert("No se pudieron cargar los datos necesarios para el horario.")
+      setHorarios(Array.isArray(horData) ? horData : []);
+    } catch (e) {
+      console.error('Error horarios:', e.response?.status, e.response?.data || e);
+      setHorarios([]);
     } finally {
       setCargando(false);
     }
   };
 
-  const manejarCambio = (e) => setFormulario({ ...formulario, [e.target.name]: e.target.value });
+const manejarFiltroAdmin = async (e) => {
+  const idSeleccionado = e.target.value;
+  setFiltroDocente(idSeleccionado);
+  setCargando(true);
+  try {
+    const data =
+      idSeleccionado === ''
+        ? await getHorarios()
+        : await getHorariosPorDocente(idSeleccionado);
+
+    console.log('filtro admin →', data);
+    setHorarios(Array.isArray(data) ? data : []);
+  } catch (e) {
+    console.error('Error filtro:', e.response?.status, e.response?.data || e);
+    setHorarios([]);
+  } finally {
+    setCargando(false);
+  }
+};
+
+  // Helpers de nombres
+  const obtenerNombreGrado = (idGrado) => {
+    const grado = grados.find((g) => g.id_grad === idGrado);
+    return grado ? grado.descripcion || grado.nombre : `Grado ${idGrado}`;
+  };
+
+  const obtenerNombreSeccionCompleta = (idSeccion) => {
+    const sec = secciones.find((s) => s.id_seccion === idSeccion);
+    if (!sec) return 'Sin sección';
+    return `${obtenerNombreGrado(sec.id_grado)} - Sección ${sec.descripcion}`;
+  };
+
+  const obtenerNombreAsignatura = (id) => {
+    const a = asignaturas.find((x) => x.id_asign === id);
+    return a ? a.descripcion : 'Sin asignatura';
+  };
+
+  const obtenerNombreDocente = (id) => {
+    const d = docentes.find((x) => x.id_docen === id);
+    return d ? `${d.nom} ${d.apell}` : 'Sin asignar';
+  };
+
+  const obtenerNombreAula = (id) => {
+    const a = aulas.find((x) => x.id_aula === id);
+    return a ? a.descripcion : 'Sin aula';
+  };
+
+  const COLORES = [
+    '#3182ce', // azul
+    '#38a169', // verde
+    '#d69e2e', // amarillo
+    '#dd6b20', // naranja
+    '#805ad5', // morado
+    '#e53e3e', // rojo
+    '#319795', // teal
+    '#d53f8c', // rosa
+  ];
+
+  const colorPorAsignatura = (idAsig) => {
+    if (!idAsig) return COLORES[0];
+    return COLORES[Number(idAsig) % COLORES.length];
+  };
+
+  const formatearHora = (h) => {
+    if (!h) return '';
+    return String(h).slice(0, 5); // 08:00:00 → 08:00
+  };
+
+  const mostrarVistaCuadricula =
+  rolActual === 'docente' || (rolActual === 'admin' && filtroDocente !== '');
+
+  // Búsqueda
+  const horariosFiltrados = useMemo(() => {
+    const q = busqueda.trim().toLowerCase();
+    if (!q) return horarios;
+
+    return horarios.filter((h) => {
+      const dia = String(h.dia || '').toLowerCase();
+      const hora = `${h.hora_inicio} - ${h.hora_fin}`.toLowerCase();
+      const aula = obtenerNombreAula(h.id_aula).toLowerCase();
+      const seccion = obtenerNombreSeccionCompleta(h.id_seccion).toLowerCase();
+      const asig = obtenerNombreAsignatura(h.id_asig).toLowerCase();
+      const doc = obtenerNombreDocente(h.id_docent).toLowerCase();
+
+      return (
+        dia.includes(q) ||
+        hora.includes(q) ||
+        aula.includes(q) ||
+        seccion.includes(q) ||
+        asig.includes(q) ||
+        doc.includes(q)
+      );
+    });
+  }, [horarios, busqueda, aulas, secciones, grados, asignaturas, docentes]);
+
+  const manejarCambio = (e) => {
+    setFormulario({ ...formulario, [e.target.name]: e.target.value });
+  };
+
+  const limpiarFormulario = () => {
+    setFormulario({
+      dia: 'Lunes',
+      hora_inicio: '08:00:00',
+      hora_fin: '09:35:00',
+      id_aula: '',
+      id_seccion: '',
+      id_asig: '',
+      id_docent: '',
+    });
+    setModoEdicion(false);
+    setIdEditando(null);
+  };
+
+  const abrirCrear = () => {
+    limpiarFormulario();
+    setMostrarFormulario(true);
+  };
+
+  const abrirEditar = (h) => {
+    setFormulario({
+      dia: h.dia || 'Lunes',
+      hora_inicio: h.hora_inicio || '08:00:00',
+      hora_fin: h.hora_fin || '09:35:00',
+      id_aula: h.id_aula || '',
+      id_seccion: h.id_seccion || '',
+      id_asig: h.id_asig || '',
+      id_docent: h.id_docent || '',
+    });
+    setIdEditando(h.id_horario);
+    setModoEdicion(true);
+    setMostrarFormulario(true);
+  };
 
   const guardarHorario = async (e) => {
     e.preventDefault();
     try {
-      const datosAEnviar = {
+      const datos = {
         ...formulario,
         id_aula: Number(formulario.id_aula),
         id_seccion: Number(formulario.id_seccion),
         id_asig: Number(formulario.id_asig),
-        id_docent: Number(formulario.id_docent)
+        id_docent: Number(formulario.id_docent),
       };
 
-      await createHorario(datosAEnviar);
-      alert('¡Bloque de horario asignado con éxito!');
-      setFormulario({
-        dia: 'Lunes',
-        hora_inicio: '08:00:00',
-        hora_fin: '09:35:00',
-        id_aula: '',
-        id_seccion: '',
-        id_asig: '',
-        id_docent: ''
-      });
+      if (modoEdicion && idEditando) {
+        await updateHorario(idEditando, { ...datos, is_active: true });
+        alert('¡Horario actualizado con éxito!');
+      } else {
+        await createHorario(datos);
+        alert('¡Bloque de horario asignado con éxito!');
+      }
+
       setMostrarFormulario(false);
+      limpiarFormulario();
       cargarDatosIniciales();
     } catch (error) {
-      console.error("DETALLE DEL ERROR DE FASTAPI:", error.response?.data); // <-- Esto nos dirá la verdad exacta
-      alert('Error al guardar el horario: ' + JSON.stringify(error.response?.data?.detail || error.message));
+      console.error(error.response?.data);
+      alert(
+        'Error al guardar el horario: ' +
+          JSON.stringify(error.response?.data?.detail || error.message)
+      );
     }
   };
 
   const eliminarHorarioId = async (id) => {
-    if (window.confirm('¿Está seguro de eliminar este bloque de horario?')) {
-      try {
-        await deleteHorario(id);
-        cargarDatosIniciales();
-      } catch (error) {
-        console.error(error);
-        alert('No se pudo eliminar el horario.');
-      }
+    if (!window.confirm('¿Está seguro de eliminar este bloque de horario?')) return;
+    try {
+      await deleteHorario(id);
+      cargarDatosIniciales();
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo eliminar el horario.');
     }
-  };
-
-
-
-  // Funciones auxiliares para mostrar nombres en vez de IDs
-
-  const obtenerNombreSeccionCompleta = (idSeccion) => {
-    // 1. Buscamos la sección por su ID
-    const sec = secciones.find(s => s.id_seccion === idSeccion);
-    if (!sec) return 'Sin sección';
-
-    // 2. Buscamos el grado al que pertenece esa sección usando su id_grado
-    const grado = grados.find(g => g.id_grad === sec.id_grado);
-    const nombreGrado = grado ? grado.descripcion || grado.nombre : '';
-
-    // 3. Retornamos ambos combinados para que quede perfecto
-    return nombreGrado ? `${nombreGrado} - Sección ${sec.descripcion}` : `Sección ${sec.descripcion}`;
-  };
-
-  const obtenerNombreAsignatura = (id) => {
-    const asig = asignaturas.find(a => a.id_asign === id);
-    return asig ? asig.descripcion : 'Sin asignatura';
-  };
-
-  const obtenerNombreDocente = (id) => {
-    const doc = docentes.find(d => d.id_docen === id);
-    return doc ? `${doc.nom} ${doc.apell}` : 'Sin asignar';
-  };
-
-  const obtenerNombreAula = (id) => {
-    const aula = aulas.find(a => a.id_aula === id);
-    return aula ? aula.descripcion : 'Sin aula';
-  };
-
-  const obtenerNombreSeccion = (id) => {
-    const sec = secciones.find(s => s.id_seccion === id);
-    return sec ? sec.descripcion : 'Sin sección';
-  };
-
-  const obtenerNombreGrado = (idGrado) => {
-    const grado = grados.find(g => g.id_grad === idGrado);
-    return grado ? grado.descripcion : `Grado ${idGrado}`;
   };
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+      {/* Cabecera */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h1>Horarios de Clases</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={() => window.print()} style={{ background: '#4a5568', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '6px', cursor: 'pointer' }}>🖨️ Imprimir</button>
-          <button className="boton-primario" onClick={() => setMostrarFormulario(!mostrarFormulario)}>
-            {mostrarFormulario ? 'Cancelar' : '+ Asignar Horario'}
+          <button
+            onClick={() => window.print()}
+            style={{
+              background: '#4a5568',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+            }}
+          >
+            🖨️ Imprimir
           </button>
+          {rolActual !== 'docente' && (
+            <button className="boton-primario" onClick={abrirCrear}>
+              {mostrarFormulario && !modoEdicion ? 'Cancelar' : '+ Asignar Horario'}
+            </button>
+          )}
         </div>
       </div>
 
-      {mostrarFormulario && (
+      {/* Formulario crear / editar */}
+      {mostrarFormulario && rolActual !== 'docente' && (
         <div className="tarjeta" style={{ marginBottom: '20px' }}>
-          <h3>Asignar Nuevo Bloque de Horario</h3>
+          <h3>{modoEdicion ? 'Editar Bloque de Horario' : 'Asignar Nuevo Bloque de Horario'}</h3>
           <form onSubmit={guardarHorario}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
-              
               <div className="campo-formulario">
                 <label>Día</label>
                 <select name="dia" value={formulario.dia} onChange={manejarCambio} required>
@@ -224,26 +351,26 @@ export default function Horarios() {
               </div>
 
               <div className="campo-formulario">
-                <label>Hora Inicio (Formato 24h)</label>
-                <input 
-                  type="text" 
-                  name="hora_inicio" 
-                  value={formulario.hora_inicio} 
-                  onChange={manejarCambio} 
-                  placeholder="Ej: 08:00:00"
-                  required 
+                <label>Hora Inicio (24h)</label>
+                <input
+                  type="text"
+                  name="hora_inicio"
+                  value={formulario.hora_inicio}
+                  onChange={manejarCambio}
+                  placeholder="08:00:00"
+                  required
                 />
               </div>
 
               <div className="campo-formulario">
-                <label>Hora Fin (Formato 24h)</label>
-                <input 
-                  type="text" 
-                  name="hora_fin" 
-                  value={formulario.hora_fin} 
-                  onChange={manejarCambio} 
-                  placeholder="Ej: 09:35:00"
-                  required 
+                <label>Hora Fin (24h)</label>
+                <input
+                  type="text"
+                  name="hora_fin"
+                  value={formulario.hora_fin}
+                  onChange={manejarCambio}
+                  placeholder="09:35:00"
+                  required
                 />
               </div>
 
@@ -251,7 +378,11 @@ export default function Horarios() {
                 <label>Aula</label>
                 <select name="id_aula" value={formulario.id_aula} onChange={manejarCambio} required>
                   <option value="">Seleccione un aula...</option>
-                  {aulas.map(a => <option key={a.id_aula} value={a.id_aula}>{a.descripcion}</option>)}
+                  {aulas.map((a) => (
+                    <option key={a.id_aula} value={a.id_aula}>
+                      {a.descripcion}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -259,7 +390,7 @@ export default function Horarios() {
                 <label>Sección</label>
                 <select name="id_seccion" value={formulario.id_seccion} onChange={manejarCambio} required>
                   <option value="">Seleccione una sección...</option>
-                  {secciones.map(s => (
+                  {secciones.map((s) => (
                     <option key={s.id_seccion} value={s.id_seccion}>
                       {obtenerNombreGrado(s.id_grado)} - Sección {s.descripcion}
                     </option>
@@ -268,10 +399,10 @@ export default function Horarios() {
               </div>
 
               <div className="campo-formulario">
-                <label>Asignatura (Materia)</label>
+                <label>Asignatura</label>
                 <select name="id_asig" value={formulario.id_asig} onChange={manejarCambio} required>
                   <option value="">Seleccione una asignatura...</option>
-                  {asignaturas.map(asig => (
+                  {asignaturas.map((asig) => (
                     <option key={asig.id_asign} value={asig.id_asign}>
                       {asig.descripcion}
                     </option>
@@ -283,72 +414,276 @@ export default function Horarios() {
                 <label>Docente</label>
                 <select name="id_docent" value={formulario.id_docent} onChange={manejarCambio} required>
                   <option value="">Seleccione un docente...</option>
-                  {docentes.map(doc => <option key={doc.id_docen} value={doc.id_docen}>{doc.nom} {doc.apell}</option>)}
+                  {docentes.map((doc) => (
+                    <option key={doc.id_docen} value={doc.id_docen}>
+                      {doc.nom} {doc.apell}
+                    </option>
+                  ))}
                 </select>
               </div>
-
             </div>
-            <button type="submit" className="boton-primario" style={{ marginTop: '15px' }}>Guardar Bloque</button>
+
+            <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
+              <button type="submit" className="boton-primario">
+                {modoEdicion ? 'Actualizar Bloque' : 'Guardar Bloque'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMostrarFormulario(false);
+                  limpiarFormulario();
+                }}
+                style={{
+                  background: '#e2e8f0',
+                  border: 'none',
+                  padding: '10px 16px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
           </form>
         </div>
       )}
 
+      {/* Listado */}
       <div className="tarjeta">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-        <h3>
-          {rolActual === 'docente' ? 'Mi Horario de Clases' : `Horarios Registrados (${horarios.length})`}
-        </h3>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '15px',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
+          <h3>
+            {rolActual === 'docente'
+              ? 'Mi Horario de Clases'
+              : `Horarios Registrados (${horariosFiltrados.length})`}
+          </h3>
 
-        {/* SELECTOR SOLO VISIBLE PARA ADMIN */}
-        {rolActual === 'admin' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Filtrar por Docente:</label>
-            <select 
-              value={filtroDocente} 
-              onChange={manejarFiltroAdmin}
-              style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e0' }}
-            >
-              <option value="">Todos los docentes</option>
-              {docentes.map(doc => (
-                <option key={doc.id_docen} value={doc.id_docen}>
-                  {doc.nom} {doc.apell}
-                </option>
-              ))}
-            </select>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* Búsqueda */}
+            <input
+              type="text"
+              placeholder="Buscar por día, aula, sección, docente..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: '1px solid #cbd5e0',
+                minWidth: '220px',
+              }}
+            />
+
+            {/* Filtro admin */}
+            {rolActual === 'admin' && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Docente:</label>
+                <select
+                  value={filtroDocente}
+                  onChange={manejarFiltroAdmin}
+                  style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e0' }}
+                >
+                  <option value="">Todos</option>
+                  {docentes.map((doc) => (
+                    <option key={doc.id_docen} value={doc.id_docen}>
+                      {doc.nom} {doc.apell}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-        {cargando ? <p>Cargando horarios...</p> : (
-          horarios.length === 0 ? <p>No hay horarios asignados en el servidor.</p> : (
-            <table className="tabla">
-              <thead>
-                <tr>
-                  <th>Día</th>
-                  <th>Hora</th>
-                  <th>Aula</th>
-                  <th>Sección</th>
-                  <th>Asignatura</th>
-                  <th>Docente</th>
-                  <th className="acciones-tabla">Acciones</th>
+        </div>
+
+        {cargando ? (
+          <p>Cargando horarios...</p>
+        ) : horariosFiltrados.length === 0 ? (
+          <p>No hay horarios que coincidan con la búsqueda o no hay horarios asignados.</p>
+        ) : mostrarVistaCuadricula ? (
+          /* ========== VISTA TIPO HORARIO ESCOLAR ========== */
+          <div style={{ overflowX: 'auto' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '90px repeat(5, minmax(140px, 1fr))',
+                gap: '8px',
+                minWidth: '800px',
+              }}
+            >
+              {/* Cabecera */}
+              <div style={{ fontWeight: 'bold', textAlign: 'center', padding: '10px' }}>
+                Hora
+              </div>
+              {DIAS.map((dia) => (
+                <div
+                  key={dia}
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    padding: '10px',
+                    background: '#edf2f7',
+                    borderRadius: '8px',
+                  }}
+                >
+                  {dia}
+                </div>
+              ))}
+
+              {/* Filas por cada bloque horario único */}
+              {(() => {
+                // Bloques únicos ordenados por hora_inicio
+                const bloques = [
+                  ...new Map(
+                    horariosFiltrados.map((h) => [
+                      `${formatearHora(h.hora_inicio)}-${formatearHora(h.hora_fin)}`,
+                      {
+                        inicio: formatearHora(h.hora_inicio),
+                        fin: formatearHora(h.hora_fin),
+                        key: `${formatearHora(h.hora_inicio)}-${formatearHora(h.hora_fin)}`,
+                      },
+                    ])
+                  ).values(),
+                ].sort((a, b) => a.inicio.localeCompare(b.inicio));
+
+                return bloques.map((bloque) => (
+                  <div key={bloque.key} style={{ display: 'contents' }}>
+                    {/* Columna de hora */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: '#f7fafc',
+                        borderRadius: '8px',
+                        padding: '8px',
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        color: '#4a5568',
+                      }}
+                    >
+                      {bloque.inicio}
+                      <br />
+                      {bloque.fin}
+                    </div>
+
+                    {/* Celdas por día */}
+                    {DIAS.map((dia) => {
+                      const clase = horariosFiltrados.find(
+                        (h) =>
+                          h.dia === dia &&
+                          formatearHora(h.hora_inicio) === bloque.inicio &&
+                          formatearHora(h.hora_fin) === bloque.fin
+                      );
+
+                      if (!clase) {
+                        return (
+                          <div
+                            key={`${bloque.key}-${dia}`}
+                            style={{
+                              minHeight: '90px',
+                              background: '#fafafa',
+                              borderRadius: '8px',
+                              border: '1px dashed #e2e8f0',
+                            }}
+                          />
+                        );
+                      }
+
+                      const color = colorPorAsignatura(clase.id_asig);
+
+                      return (
+                        <div
+                          key={`${bloque.key}-${dia}`}
+                          style={{
+                            minHeight: '90px',
+                            background: color,
+                            color: 'white',
+                            borderRadius: '10px',
+                            padding: '10px',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px',
+                          }}
+                        >
+                          <strong style={{ fontSize: '14px', lineHeight: 1.2 }}>
+                            {obtenerNombreAsignatura(clase.id_asig)}
+                          </strong>
+                          <span style={{ fontSize: '12px', opacity: 0.95 }}>
+                            {obtenerNombreSeccionCompleta(clase.id_seccion)}
+                          </span>
+                          <span style={{ fontSize: '12px', opacity: 0.9 }}>
+                            📍 {obtenerNombreAula(clase.id_aula)}
+                          </span>
+                          {rolActual === 'admin' && (
+                            <span style={{ fontSize: '11px', opacity: 0.85 }}>
+                              👤 {obtenerNombreDocente(clase.id_docent)}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ));
+              })()}
+            </div>
+
+            {/* Leyenda rápida */}
+            <p style={{ marginTop: '16px', fontSize: '13px', color: '#718096' }}>
+              Cada color representa una asignatura. Vista de horario semanal.
+            </p>
+          </div>
+        ) : (
+          /* ========== TABLA NORMAL (Admin → Todos) ========== */
+          <table className="tabla">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Hora</th>
+                <th>Aula</th>
+                <th>Sección</th>
+                <th>Asignatura</th>
+                <th>Docente</th>
+                <th className="acciones-tabla">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {horariosFiltrados.map((h) => (
+                <tr key={h.id_horario}>
+                  <td>{h.dia}</td>
+                  <td>
+                    {formatearHora(h.hora_inicio)} - {formatearHora(h.hora_fin)}
+                  </td>
+                  <td>{obtenerNombreAula(h.id_aula)}</td>
+                  <td>{obtenerNombreSeccionCompleta(h.id_seccion)}</td>
+                  <td>{obtenerNombreAsignatura(h.id_asig)}</td>
+                  <td>{obtenerNombreDocente(h.id_docent)}</td>
+                  <td className="acciones-tabla">
+                    <button
+                      onClick={() => eliminarHorarioId(h.id_horario)}
+                      style={{
+                        background: '#e53e3e',
+                        color: 'white',
+                        border: 'none',
+                        padding: '5px 10px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {horarios.map(h => (
-                  <tr key={h.id_horario}>
-                    <td>{h.dia}</td>
-                    <td>{h.hora_inicio} - {h.hora_fin}</td>
-                    <td>{obtenerNombreAula(h.id_aula)}</td>
-                    <td><strong>{obtenerNombreSeccionCompleta(h.id_seccion)}</strong></td>
-                    <td><strong>{obtenerNombreAsignatura(h.id_asig)}</strong></td>
-                    <td>{obtenerNombreDocente(h.id_docent)}</td>
-                    <td className="acciones-tabla">
-                      <button onClick={() => eliminarHorarioId(h.id_horario)} style={{ background: '#e53e3e', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Eliminar</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

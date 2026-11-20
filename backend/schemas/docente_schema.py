@@ -38,6 +38,7 @@ class DocenteUpdate(BaseModel):
 
 class DocenteRead(DocenteBase):
     id_docen: int
+    id_user: int
     is_active: bool
     created_at: date
     updated_at: Optional[date] = None
@@ -46,6 +47,7 @@ class DocenteRead(DocenteBase):
 
 class DocentesRead(BaseModel):
     id_docen: int
+    id_user: int 
     nom: str
     apell: str
     cedula: str

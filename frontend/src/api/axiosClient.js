@@ -13,7 +13,7 @@ axiosClient.interceptors.request.use(
   (config) => {
     // Buscamos el token JWT guardado en el navegador tras iniciar sesión
     const token = localStorage.getItem('access_token');
-    
+
     if (token) {
       // Si el token existe, lo adjuntamos automáticamente en la cabecera Authorization
       config.headers.Authorization = `Bearer ${token}`;
