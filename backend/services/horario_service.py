@@ -108,6 +108,16 @@ def update_horario_complete_service(session: Session, id_horario: int, data: Hor
         raise HTTPException(status_code=404, detail="Horario no encontrado.")
 
     _validar_foraneas(session, data.id_docent, data.id_aula, data.id_seccion, data.id_asig)
+    _validar_conflicto_horario(
+        session,
+        data.dia,
+        data.hora_inicio,
+        data.hora_fin,
+        data.id_aula,
+        data.id_docent,
+        data.id_seccion,
+        exclude_id=id_horario,  # no chocar consigo mismo
+    )
 
     update_dict = data.model_dump()
     for key, value in update_dict.items():
@@ -118,6 +128,7 @@ def update_horario_complete_service(session: Session, id_horario: int, data: Hor
     session.refresh(horario)
     return horario
 
+
 def update_horario_partial_service(session: Session, id_horario: int, data: HorarioUpdate) -> Horario:
     horario = session.get(Horario, id_horario)
     if not horario:
@@ -125,13 +136,24 @@ def update_horario_partial_service(session: Session, id_horario: int, data: Hora
 
     update_dict = data.model_dump(exclude_unset=True)
 
-    # Validar foráneas solo si vienen en el patch
-    _validar_foraneas(
+    id_docent = update_dict.get("id_docent", horario.id_docent)
+    id_aula = update_dict.get("id_aula", horario.id_aula)
+    id_seccion = update_dict.get("id_seccion", horario.id_seccion)
+    id_asig = update_dict.get("id_asig", horario.id_asig)
+    dia = update_dict.get("dia", horario.dia)
+    hora_inicio = update_dict.get("hora_inicio", horario.hora_inicio)
+    hora_fin = update_dict.get("hora_fin", horario.hora_fin)
+
+    _validar_foraneas(session, id_docent, id_aula, id_seccion, id_asig)
+    _validar_conflicto_horario(
         session,
-        update_dict.get("id_docent", horario.id_docent),
-        update_dict.get("id_aula", horario.id_aula),
-        update_dict.get("id_seccion", horario.id_seccion),
-        update_dict.get("id_asig", horario.id_asig)
+        dia,
+        hora_inicio,
+        hora_fin,
+        id_aula,
+        id_docent,
+        id_seccion,
+        exclude_id=id_horario,
     )
 
     for key, value in update_dict.items():
